@@ -39,6 +39,16 @@ app.post('/new', function(request, response) {
   response.redirect('/')
 })
 
+app.get('/data', function(request, response) {
+  //get data from db
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places"
+  let db = new sqlite.Database('./.data/diary.db')
+  db.all(sql, [], (err, data) => {
+    if (err) throw err;
+    response.send(data)
+  })
+})
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);

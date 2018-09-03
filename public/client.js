@@ -1,5 +1,5 @@
-var load = function() {
-  alert("hi")
+var init = function() {
+  
 }
 
-document.onload = load
+window.onload = init
