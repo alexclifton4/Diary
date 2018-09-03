@@ -25,14 +25,16 @@ app.get('/new', function(request, response) {
 
 app.post('/new', function(request, response) {
   //get data
-  let date = request.body.date
+  let date = new Date(request.body.date).getTime()
   let country = request.body.country
   let place = request.body.place
   let notes = request.body.notes
   
-  let x = new Date(date).getValue()
-  console.log(x)
-  console.log(new Date(x))
+  //insert into db
+  let sql = `INSERT INTO places (date, country, place, notes) VALUES ("${date}", "${country}", "${place}", "${notes}");`
+  let db = new sqlite.Database('./.data/diary.db')
+  db.run(sql, [], (err) => {if (err) throw err});
+  db.close()
   
   response.redirect('/')
 })
