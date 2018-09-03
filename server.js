@@ -4,6 +4,8 @@
 // init project
 var express = require('express');
 var app = express();
+var sqlite = require('sqlite3')
+require('./db.js')()
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -22,7 +24,16 @@ app.get('/new', function(request, response) {
 })
 
 app.post('/new', function(request, response) {
-  console.log(request.body)
+  //get data
+  let date = request.body.date
+  let country = request.body.country
+  let place = request.body.place
+  let notes = request.body.notes
+  
+  let x = new Date(date).getValue()
+  console.log(x)
+  console.log(new Date(x))
+  
   response.redirect('/')
 })
 
