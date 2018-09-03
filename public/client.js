@@ -9,7 +9,9 @@ var init = function() {
     let data = response.data
     for (let i in data) {
       let x = data[i]
-      html += `<tr><td>${x.id}</td><td>${x.date}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td></tr>`
+      let y = new Date(x.date)
+      let z = `y.getDate()`
+      html += `<tr><td>${x.id}</td><td>${z}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td></tr>`
     }
     
     //update page
