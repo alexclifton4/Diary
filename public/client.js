@@ -1,15 +1,17 @@
 /* globals axios, dateFormat */
 
 var init = function() {
-  //create top of table
-  let html = "<table><tr><th>Date</th><th>Country</th><th>Place</th><th>Notes</th><th>Delete</th></tr>"
+  let html;
   
   //get data from server
   axios.get("/data").then((response) => {
     let data = response.data
-    if (!data) {
-      
+    if (data == "") {
+      html = "No records"
     } else {
+      //create top of table
+      html = "<table><tr><th>Date</th><th>Country</th><th>Place</th><th>Notes</th><th>Delete</th></tr>"
+  
       for (let i in data) {
         let x = data[i]
         let y = dateFormat(x.date, "dS mmm. yyyy")
