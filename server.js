@@ -46,7 +46,7 @@ app.post('/new', function(request, response) {
 
 app.get('/data', function(request, response) {
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
