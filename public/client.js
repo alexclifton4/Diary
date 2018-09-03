@@ -7,6 +7,7 @@ var init = function() {
   //get data from server
   axios.get("/data").then((response) => {
     let data = response.data
+    alert(data)
     for (let i in data) {
       let x = data[i]
       let y = dateFormat(x.date, "dS mmm. yyyy")

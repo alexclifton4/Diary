@@ -47,9 +47,16 @@ app.get('/data', function(request, response) {
     if (err) throw err;
     response.send(data)
   })
+db.close()
 })
 
-app
+app.get('/delete', function(request, response) {
+  let sql = `DELETE FROM places WHERE rowid=${request.query.id}`
+  let db = new sqlite.Database('./.data/diary.db')
+  db.run(sql, [], (err) => {if (err) throw err});
+  
+  response.redirect('/')
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
