@@ -10,7 +10,7 @@ var app = express();
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended: false}))
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
@@ -22,7 +22,8 @@ app.get('/new', function(request, response) {
 })
 
 app.post('/new', function(request, response) {
-  
+  console.log(request.body)
+  response.redirect('/')
 })
 
 // listen for requests :)
