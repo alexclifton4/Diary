@@ -30,18 +30,23 @@ app.post('/new', function(request, response) {
   let place = request.body.place
   let notes = request.body.notes
   
-  //insert into db
-  let sql = `INSERT INTO places (date, country, place, notes) VALUES ("${date}", "${country}", "${place}", "${notes}");`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.run(sql, [], (err) => {if (err) throw err});
-  db.close()
+  //make sure fields aren't blank
+  if (date == "" || country == "" || place == "") {
+    console.log("Empty submission")
+  } else {
+    //insert into db
+    let sql = `INSERT INTO places (date, country, place, notes) VALUES ("${date}", "${country}", "${place}", "${notes}");`
+    let db = new sqlite.Database('./.data/diary.db')
+    db.run(sql, [], (err) => {if (err) throw err});
+    db.close()
+  }
   
   response.redirect('/')
 })
 
 app.get('/data', function(request, response) {
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
