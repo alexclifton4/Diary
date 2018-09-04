@@ -1,4 +1,5 @@
 /* globals axios, dateFormat */
+var view = "/data"
 
 var init = function() {
   getData("/data")
@@ -6,6 +7,7 @@ var init = function() {
 
 //gets all data
 var getData = function(path) {
+  view = path
   let html;
   
   //get data from server
@@ -33,7 +35,7 @@ var getData = function(path) {
 //deletes a record
 var remove = function(id) {
   axios.get("/delete?id=" + id).then((response) => {
-    getData("/data")
+    getData(view)
   })
 }
 
