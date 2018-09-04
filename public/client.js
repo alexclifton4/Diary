@@ -31,4 +31,8 @@ var remove = function(id) {
   })
 }
 
+var test = function(x) {
+  alert(x.value)
+}
+
 window.onload = init
