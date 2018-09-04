@@ -15,12 +15,19 @@ var init = function() {
       for (let i in data) {
         let x = data[i]
         let y = dateFormat(x.date, "dS mmm. yyyy")
-        html += `<tr><td>${y}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td><td><a href="/delete?id=${x.id}">X</a></td></tr>`
+        let z = `<button onclick="remove(${x.id})">X</button>`
+        html += `<tr><td>${y}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td><td>${z}</td></tr>`
       }
     }
     
     //update page
     document.getElementById('table').innerHTML = html + "</table>"
+  })
+}
+
+var remove = function(id) {
+  axios.get("/delete?id=" + id).then((response) => {
+    init()
   })
 }
 
