@@ -31,9 +31,7 @@ app.post('/new', function(request, response) {
   let notes = request.body.notes
   
   //make sure fields aren't blank
-  if (date == "" || country == "" || place == "") {
-    console.log("Empty submission")
-  } else {
+  if (!(date == "" || country == "" || place == "")) {
     //insert into db
     let sql = `INSERT INTO places (date, country, place, notes) VALUES ("${date}", "${country}", "${place}", "${notes}");`
     let db = new sqlite.Database('./.data/diary.db')
