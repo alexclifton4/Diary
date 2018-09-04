@@ -68,6 +68,21 @@ app.get('/dates', function(request, response) {
 db.close()
 })
 
+app.get('/search', function(request, response) {
+  //get search term
+  let country = request.query.country
+  let 
+  
+  //get data from db
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC, country ASC, place ASC"
+  let db = new sqlite.Database('./.data/diary.db')
+  db.all(sql, [], (err, data) => {
+    if (err) throw err;
+    response.send(data)
+  })
+db.close()
+})
+
 app.get('/delete', function(request, response) {
   let sql = `DELETE FROM places WHERE rowid=${request.query.id}`
   let db = new sqlite.Database('./.data/diary.db')
