@@ -1,5 +1,9 @@
 /* globals axios, dateFormat */
 
+var view = "all"
+var fromDate = ""
+var toDate = ""
+
 var init = function() {
   let html;
   
@@ -31,8 +35,14 @@ var remove = function(id) {
   })
 }
 
-var test = function(x) {
-  alert(x.value)
+var changeView = function(button) {
+  if (view != button.value) {
+    view = button.value
+  }
+}
+
+var changeDates = function() {
+  alert("x")
 }
 
 window.onload = init
