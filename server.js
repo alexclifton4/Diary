@@ -53,6 +53,12 @@ app.get('/data', function(request, response) {
 db.close()
 })
 
+app.get('/dates', function(request, response) {
+  //get dates
+  let from = request.query.from
+  console.log(new Date(from))
+})
+
 app.get('/delete', function(request, response) {
   let sql = `DELETE FROM places WHERE rowid=${request.query.id}`
   let db = new sqlite.Database('./.data/diary.db')
