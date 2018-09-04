@@ -248,3 +248,7 @@ var html = `<select name="country">
 <option value="Zambia">Zambia</option>
 <option value="Zimbabwe">Zimbabwe</option>
 </select>`
+
+window.onload = function () {
+  document.getElementById('country').outerHTML = html
+}

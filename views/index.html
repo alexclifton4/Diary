@@ -2,6 +2,7 @@
   <head>
     <title>Diary</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="countries.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/dateformat/lib/dateformat.js"></script>
     <script src="client.js"></script>
@@ -20,7 +21,7 @@
     <button onclick="viewDates()">View Dates</button>
     From <input type="date" id="fromDate"> to <input type="date" id="toDate"><br>
     
-    <input type="text" id="country" placeholder="Country">
+    <div id="country"></div>
     <button onclick="searchCountry()">Search by Country</button>
     
     <hr>
