@@ -71,10 +71,10 @@ db.close()
 app.get('/search', function(request, response) {
   //get search term
   let country = request.query.country
-  let 
+  let search = 'WHERE country LIKE "' + country + '"'
   
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC, country ASC, place ASC"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places " + search + " ORDER BY date ASC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;

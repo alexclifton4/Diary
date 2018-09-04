@@ -12,7 +12,7 @@ var getData = function(path) {
   axios.get(path).then((response) => {
     let data = response.data
     if (data == "") {
-      html = "No records"
+      html = "No results"
     } else {
       //create top of table
       html = "<table><tr><th>Date</th><th>Country</th><th>Place</th><th>Notes</th><th>Delete</th></tr>"
