@@ -56,7 +56,16 @@ db.close()
 app.get('/dates', function(request, response) {
   //get dates
   let from = request.query.from
-  console.log(new Date(from))
+  let to = request.query.to
+  
+  //get data from db
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places WHERE date>" + from + " AND date<" + to + " ORDER BY date ASC, country ASC, place ASC"
+  let db = new sqlite.Database('./.data/diary.db')
+  db.all(sql, [], (err, data) => {
+    if (err) throw err;
+    response.send(data)
+  })
+db.close()
 })
 
 app.get('/delete', function(request, response) {
