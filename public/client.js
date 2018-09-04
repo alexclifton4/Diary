@@ -53,4 +53,10 @@ var searchCountry = function() {
   getData("/search?country=" + country)
 }
 
+//search for a place
+var searchPlace = function() {
+  let place = document.getElementById('place').value
+  getData("/search?place=" + place)
+}
+
 window.onload = init

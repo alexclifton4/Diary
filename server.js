@@ -71,7 +71,13 @@ db.close()
 app.get('/search', function(request, response) {
   //get search term
   let country = request.query.country
-  let search = 'WHERE country LIKE "' + country + '"'
+  let place = request.query.place
+  let search
+  if (country) {
+    search = 'WHERE country LIKE "' + country + '"'
+  } else {
+    search = "WHERE place LIKE "' + 
+  }
   
   //get data from db
   let sql = "SELECT rowid AS id, date, country, place, notes FROM places " + search + " ORDER BY date ASC, country ASC, place ASC"

@@ -1,4 +1,4 @@
-var dropdown = `<select name="country">
+var dropdown = `<select name="country" id="country">
 <option value="">Country...</option>
 <option value="United Kingdom">United Kingdom</option>
 <option value="Afganistan">Afghanistan</option>
