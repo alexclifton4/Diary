@@ -1,4 +1,4 @@
-var html = `<select name="country">
+var dropdown = `<select name="country">
 <option value="">Country...</option>
 <option value="United Kingdom">United Kingdom</option>
 <option value="Afganistan">Afghanistan</option>
@@ -249,6 +249,6 @@ var html = `<select name="country">
 <option value="Zimbabwe">Zimbabwe</option>
 </select>`
 
-window.onload = function () {
-  document.getElementById('country').outerHTML = html
-}
+window.addEventListener('load',  function () {
+  document.getElementById('country').outerHTML = dropdown
+})
