@@ -15,9 +15,13 @@
     <a href="/new">Add new</a>
     <hr>
     
-    <button onclick="init()">View All</button><br>
+    <button onclick="getData('/data')">View All</button><br>
+    
     <button onclick="viewDates()">View Dates</button>
-    From <input type="date" id="fromDate"> To <input type="date" id="toDate">
+    From <input type="date" id="fromDate"> To <input type="date" id="toDate"><br>
+    
+    <input type="text" id="country" placeholder="Country">
+    <button onclick="searchCountry()">Search by Country</button>
     
     <hr>
     <div id="table">
