@@ -42,11 +42,47 @@ app.post('/new', function(request, response) {
   response.redirect('/')
 })
 
+app.get('/edit', function(request, response) {
+  response.sendFile(__dirname + '/views/edit.html');
+})
+
+app.post('/edit', function(request, response) {
+  //get data
+  let date = new Date(request.body.date).getTime()
+  let country = request.body.country
+  let place = request.body.place
+  let notes = request.body.notes
+  let id = request.body.id
+  
+  //make sure fields aren't blank
+  if (!(date == "" || country == "" || place == "")) {
+    //insert into db
+    let sql = `UPDATE places SET date="${date}", country="${country}", place="${place}", notes="${notes}" WHERE rowid="${id}";`
+    let db = new sqlite.Database('./.data/diary.db')
+    db.run(sql, [], (err) => {if (err) throw err});
+    db.close()
+  }
+  
+  response.redirect('/')
+})
+
 app.get('/data', function(request, response) {
   //get data from db
   let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date DESC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
+    if (err) throw err;
+    response.send(data)
+  })
+db.close()
+})
+
+app.get('/single', function(request, response) {
+  let id = request.query.id
+  //get data from db
+  let sql = `SELECT rowid AS id, date, country, place, notes FROM places WHERE rowid="${id}";`
+  let db = new sqlite.Database('./.data/diary.db')
+  db.get(sql, [], (err, data) => {
     if (err) throw err;
     response.send(data)
   })
