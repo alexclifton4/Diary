@@ -17,12 +17,12 @@ var getData = function(path) {
       html = "No results"
     } else {
       //create top of table
-      html = "<table><tr><th>Date</th><th>Country</th><th>Place</th><th>Notes</th><th>Delete</th></tr>"
+      html = "<table><tr><th>Date</th><th>Country</th><th>Place</th><th>Notes</th><th>Edit</th></tr>"
   
       for (let i in data) {
         let x = data[i]
         let y = dateFormat(x.date, "dS mmm. yyyy")
-        let z = `<button onclick="remove(${x.id})">X</button>`
+        let z = `<button onclick="edit(${x.id})">Edit</button><button onclick="remove(${x.id})">X</button>`
         html += `<tr><td>${y}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td><td>${z}</td></tr>`
       }
     }
@@ -37,6 +37,11 @@ var remove = function(id) {
   axios.get("/delete?id=" + id).then((response) => {
     getData(view)
   })
+}
+
+//edits a record
+var edit = function(id) {
+  window.location = "/edit#" + id
 }
 
 //show records between dates
