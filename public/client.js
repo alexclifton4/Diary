@@ -21,9 +21,10 @@ var getData = function(path) {
   
       for (let i in data) {
         let x = data[i]
-        let y = dateFormat(x.date, "dS mmm. yyyy")
-        let z = `<button onclick="edit(${x.id})">Edit</button><button onclick="remove(${x.id})">X</button>`
-        html += `<tr><td>${y}</td><td>${x.country}</td><td>${x.place}</td><td>${x.notes}</td><td>${z}</td></tr>`
+        let date = dateFormat(x.date, "dS mmm. yyyy")
+        let buttons = `<button onclick="edit(${x.id})">Edit</button><button onclick="remove(${x.id})">X</button>`
+        let notes = x.notes.replace(/\r\n/g, "<br>")
+        html += `<tr><td>${date}</td><td>${x.country}</td><td>${x.place}</td><td>${notes}</td><td>${buttons}</td></tr>`
       }
     }
     
