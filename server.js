@@ -44,7 +44,7 @@ app.post('/new', function(request, response) {
 
 app.get('/data', function(request, response) {
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date ASC, country ASC, place ASC"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places ORDER BY date DESC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
@@ -59,7 +59,7 @@ app.get('/dates', function(request, response) {
   let to = request.query.to
   
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places WHERE date>" + from + " AND date<" + to + " ORDER BY date ASC, country ASC, place ASC"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places WHERE date>" + from + " AND date<" + to + " ORDER BY date DESC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
@@ -80,7 +80,7 @@ app.get('/search', function(request, response) {
   }
   
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM places " + search + " ORDER BY date ASC, country ASC, place ASC"
+  let sql = "SELECT rowid AS id, date, country, place, notes FROM places " + search + " ORDER BY date DESC, country ASC, place ASC"
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
