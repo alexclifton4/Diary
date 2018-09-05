@@ -35,9 +35,12 @@ var getData = function(path) {
 
 //deletes a record
 var remove = function(id) {
-  axios.get("/delete?id=" + id).then((response) => {
-    getData(view)
-  })
+  //confirm
+  if (confirm("Are you sure?")) {
+    axios.get("/delete?id=" + id).then((response) => {
+      getData(view)
+    })
+  }
 }
 
 //edits a record
