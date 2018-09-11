@@ -3,7 +3,8 @@ var view = "/data"
 var diary = "diary"
 
 var init = function() {
-  getData("/data")
+  document.getElementById('addAnchor').href = '/new#' + diary
+  getData("/data?")
 }
 
 //gets all data
@@ -46,7 +47,7 @@ var remove = function(id) {
 
 //edits a record
 var edit = function(id) {
-  window.location = "/edit#" + id
+  window.location = "/edit#" + id + "." + diary
 }
 
 //show records between dates
