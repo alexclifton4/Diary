@@ -1,5 +1,6 @@
 /* globals axios, dateFormat */
 var view = "/data"
+var diary = "diary"
 
 var init = function() {
   getData("/data")
@@ -11,7 +12,7 @@ var getData = function(path) {
   let html;
   
   //get data from server
-  axios.get(path).then((response) => {
+  axios.get(path + "&diary=" + diary).then((response) => {
     let data = response.data
     if (data == "") {
       html = "No results"
@@ -37,7 +38,7 @@ var getData = function(path) {
 var remove = function(id) {
   //confirm
   if (confirm("Are you sure?")) {
-    axios.get("/delete?id=" + id).then((response) => {
+    axios.get("/delete?id=" + id + "&diary=" + diary).then((response) => {
       getData(view)
     })
   }
