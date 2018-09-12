@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: false}))
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/diary.html');
+  response.sendFile(__dirname + '/views/index.html');
 });
 
 app.get('/new', function(request, response) {
@@ -137,6 +137,12 @@ app.get('/delete', function(request, response) {
   db.run(sql, [], (err) => {if (err) throw err});
   
   response.redirect('/')
+})
+
+app.get('/allDiaries', (req, res) => {
+  let sql = "SELECT name FROM diaries"
+  let db = new sqlite.Database('./.data/diary.db')
+  db.all
 })
 
 // listen for requests :)
