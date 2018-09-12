@@ -174,8 +174,19 @@ app.get('/newDiary', (req, res) => {
 })
 
 app.get('/deleteDiary', (req, res) => {
+  //delete from master table
   let sql = `DELETE FROM diaries WHERE name="${req.query.name}"`
-  console.log(sql)
+  let db = new sqlite.Database('./.data/diary.db')
+  db.run(sql, [], (err) => {
+    if (err) throw err
+    //drop table
+    sql = "DROP TABLE " + req.query.name
+    db.run(sql, [], (err) => {
+      if (err) throw err
+      res.send("ok")
+    })
+  })
+  db.close()
 })
 
 // listen for requests :)
