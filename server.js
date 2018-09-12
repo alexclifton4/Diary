@@ -44,7 +44,7 @@ app.post('/new', function(request, response) {
     db.close()
   }
   
-  response.redirect('/')
+  response.redirect('/diary#' + diary)
 })
 
 app.get('/edit', function(request, response) {
@@ -69,7 +69,7 @@ app.post('/edit', function(request, response) {
     db.close()
   }
   
-  response.redirect('/')
+  response.redirect('/diary#' + diary)
 })
 
 app.get('/data', function(request, response) {
