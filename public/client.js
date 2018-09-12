@@ -1,6 +1,6 @@
 /* globals axios, dateFormat */
 var view = "/data"
-var diary = "diary"
+var diary = "places"
 
 var init = function() {
   document.getElementById('addAnchor').href = '/new#' + diary
