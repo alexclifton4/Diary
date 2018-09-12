@@ -156,7 +156,7 @@ app.get('/allDiaries', (req, res) => {
 
 app.get('/newDiary', (req, res) => {
   let name = req.query.name
-  if (name != "diaries") {
+  if (name != "diaries" && name!= "null") {
     //insert into master table
     let sql = `INSERT INTO diaries (name) VALUES ("${name}")`
     let db = new sqlite.Database('./.data/diary.db')
@@ -171,6 +171,11 @@ app.get('/newDiary', (req, res) => {
     });
     db.close()
   }
+})
+
+app.get('/deleteDiary', (req, res) => {
+  let sql = `DELETE FROM diaries WHERE name="${req.query.name}"`
+  console.log(sql)
 })
 
 // listen for requests :)

@@ -8,7 +8,8 @@ var init = function() {
     } else {
       for (let i in response.data) {
         let name = response.data[i].name
-        html += `<button onclick="load('${name}')">${name}</button><br>`
+        html += `<button onclick="load('${name}')">${name}</button>`
+        html += `<button onclick="remove('${name}')">Delete ${name}</button><br>`
       }
     }
     document.getElementById('diaries').innerHTML = html
@@ -24,6 +25,14 @@ window.newDiary = function() {
 
 window.load = function(name) {
   window.location = "/diary#" + name
+}
+
+window.remove = function(name) {
+  if (confirm("Are you sure?\nThis will delete the diary and all its data")){
+    axios.get('/deleteDiary?name=' + name).then((response) => {
+      init()
+    })
+  }
 }
 
 window.onload = init
