@@ -44,7 +44,7 @@ app.post('/new', function(request, response) {
     db.close()
   }
   
-  response.redirect('/')
+  response.redirect('/diary#' + diary)
 })
 
 app.get('/edit', function(request, response) {
@@ -69,7 +69,7 @@ app.post('/edit', function(request, response) {
     db.close()
   }
   
-  response.redirect('/')
+  response.redirect('/diary#' + diary)
 })
 
 app.get('/data', function(request, response) {
@@ -156,7 +156,7 @@ app.get('/allDiaries', (req, res) => {
 
 app.get('/newDiary', (req, res) => {
   let name = req.query.name
-  if (name != "diaries") {
+  if (name != "diaries" && name!= "null") {
     //insert into master table
     let sql = `INSERT INTO diaries (name) VALUES ("${name}")`
     let db = new sqlite.Database('./.data/diary.db')
@@ -171,6 +171,22 @@ app.get('/newDiary', (req, res) => {
     });
     db.close()
   }
+})
+
+app.get('/deleteDiary', (req, res) => {
+  //delete from master table
+  let sql = `DELETE FROM diaries WHERE name="${req.query.name}"`
+  let db = new sqlite.Database('./.data/diary.db')
+  db.run(sql, [], (err) => {
+    if (err) throw err
+    //drop table
+    sql = "DROP TABLE " + req.query.name
+    db.run(sql, [], (err) => {
+      if (err) throw err
+      res.send("ok")
+    })
+  })
+  db.close()
 })
 
 // listen for requests :)
