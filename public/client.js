@@ -4,6 +4,8 @@ var diary = window.location.hash.substr(1)
 
 var init = function() {
   document.getElementById('addAnchor').href = '/new#' + diary
+  document.title = diary
+  document.getElementById('title').innerHTML = diary
   getData("/data?")
 }
 
