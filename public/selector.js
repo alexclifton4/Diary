@@ -2,12 +2,13 @@
 
 var init = function() {
   axios.get('/allDiaries').then((response) => {
-    let html;
+    let html = "";
     if (response.data == "") {
       html = "No diaries"
     } else {
       for (let i in response.data) {
-        html += response.data[i].name
+        let name = response.data[i].name
+        html += `<a href="`
       }
     }
     document.getElementById('diaries').innerHTML = html
