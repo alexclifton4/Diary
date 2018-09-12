@@ -14,7 +14,7 @@ module.exports = function(){
     if (err) throw err;
     if (result['count'] == 0) {
       //Doesn't exist - create table
-      let sql = "CREATE TABLE places (date integer, country text, place text, notes text);";
+      let sql = "CREATE TABLE diaries (name text);";
       db.run(sql, [], (err) => {if (err) throw err});
       console.log("Table created")
     }

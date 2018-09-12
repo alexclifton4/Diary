@@ -19,6 +19,10 @@ app.get('/', function(request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/diary', function(request, response) {
+  response.sendFile(__dirname + '/views/diary.html')
+});
+
 app.get('/new', function(request, response) {
   response.sendFile(__dirname + '/views/new.html');
 })
@@ -135,8 +139,38 @@ app.get('/delete', function(request, response) {
   let sql = `DELETE FROM ${request.query.diary} WHERE rowid=${request.query.id}`
   let db = new sqlite.Database('./.data/diary.db')
   db.run(sql, [], (err) => {if (err) throw err});
+  db.close()
   
   response.redirect('/')
+})
+
+app.get('/allDiaries', (req, res) => {
+  let sql = "SELECT name FROM diaries"
+  let db = new sqlite.Database('./.data/diary.db')
+  db.all(sql, [], (err, data) => {
+    if (err) throw err;
+    res.send(data)
+  })
+  db.close()
+})
+
+app.get('/newDiary', (req, res) => {
+  let name = req.query.name
+  if (name != "diaries") {
+    //insert into master table
+    let sql = `INSERT INTO diaries (name) VALUES ("${name}")`
+    let db = new sqlite.Database('./.data/diary.db')
+    db.run(sql, [], (err) => {
+      if (err) throw err
+      //create new table
+      let sql = `CREATE TABLE ${name} (date integer, country text, place text, notes text);`;
+      db.run(sql, [], (err) => {
+        if (err) throw err
+        res.send("ok")
+      })
+    });
+    db.close()
+  }
 })
 
 // listen for requests :)
