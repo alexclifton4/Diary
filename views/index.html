@@ -1,36 +1,17 @@
 <html>
   <head>
     <title>Diary</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="countries.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/dateformat/lib/dateformat.js"></script>
-    <script src="client.js"></script>
+    <script src="/selector.js"></script>
   </head>
   
   <body>
     <h1>
-      Diary
+      All Diaries
     </h1>
-    
-    <a href="/new">Add new</a>
-    <hr>
-    
-    <button onclick="getData('/data')">View All</button><br>
-    
-    <button onclick="viewDates()">View Dates</button>
-    From <input type="date" id="fromDate"> to <input type="date" id="toDate"><br>
-    
-    <div id="country"></div>
-    <button onclick="searchCountry()">Search by Country</button><br>
-    
-    <input type="text" id="place" placeholder="Search...">
-    <button onclick="searchPlace()">Search by Place / Notes</button>
-    
-    <hr>
-    <div id="table">
+    <button onclick="newDiary()">New Diary</button>
+    <div id="diaries">
       Loading...
     </div>
-    
   </body>
 </html>

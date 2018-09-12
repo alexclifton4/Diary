@@ -1,8 +1,12 @@
 /* globals axios, dateFormat */
 var view = "/data"
+var diary = window.location.hash.substr(1)
 
 var init = function() {
-  getData("/data")
+  document.getElementById('addAnchor').href = '/new#' + diary
+  document.title = diary
+  document.getElementById('title').innerHTML = diary
+  getData("/data?")
 }
 
 //gets all data
@@ -11,7 +15,7 @@ var getData = function(path) {
   let html;
   
   //get data from server
-  axios.get(path).then((response) => {
+  axios.get(path + "&diary=" + diary).then((response) => {
     let data = response.data
     if (data == "") {
       html = "No results"
@@ -37,7 +41,7 @@ var getData = function(path) {
 var remove = function(id) {
   //confirm
   if (confirm("Are you sure?")) {
-    axios.get("/delete?id=" + id).then((response) => {
+    axios.get("/delete?id=" + id + "&diary=" + diary).then((response) => {
       getData(view)
     })
   }
@@ -45,7 +49,7 @@ var remove = function(id) {
 
 //edits a record
 var edit = function(id) {
-  window.location = "/edit#" + id
+  window.location = "/edit#" + id + "." + diary
 }
 
 //show records between dates
