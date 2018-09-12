@@ -8,7 +8,7 @@ var init = function() {
     } else {
       for (let i in response.data) {
         let name = response.data[i].name
-        html += `<a href="`
+        html += `<button onclick="load('${name}')">${name}</button><br>`
       }
     }
     document.getElementById('diaries').innerHTML = html
@@ -20,6 +20,10 @@ window.newDiary = function() {
   axios.get("/newDiary?name=" + name).then((response) => {
     init()
   })
+}
+
+window.load = function(name) {
+  window.location = "/diary#" + name
 }
 
 window.onload = init
