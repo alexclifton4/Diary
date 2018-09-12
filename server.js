@@ -123,7 +123,6 @@ app.get('/search', function(request, response) {
   
   //get data from db
   let sql = "SELECT rowid AS id, date, country, place, notes FROM " + diary + search + " ORDER BY date DESC, country ASC, place ASC"
-  console.log(sql)
   let db = new sqlite.Database('./.data/diary.db')
   db.all(sql, [], (err, data) => {
     if (err) throw err;
