@@ -8,7 +8,7 @@ var init = function() {
     } else {
       for (let i in response.data) {
         let name = response.data[i].name
-        html += `<button onclick="load('${name}')">${name}</button>`
+        html += `<button class="diarySelector" onclick="load('${name}')">${name}</button>`
         html += `<button onclick="remove('${name}')">Delete ${name}</button><br>`
       }
     }
@@ -19,7 +19,7 @@ var init = function() {
 window.newDiary = function() {
   let name = prompt("Enter a name for the diary:")
   axios.get("/newDiary?name=" + name).then((response) => {
-    init()
+    window.load(name)
   })
 }
 
