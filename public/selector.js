@@ -19,7 +19,7 @@ var init = function() {
 window.newDiary = function() {
   let name = prompt("Enter a name for the diary:")
   axios.get("/newDiary?name=" + name).then((response) => {
-    init()
+    window.load(name)
   })
 }
 
