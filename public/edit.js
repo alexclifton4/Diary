@@ -12,6 +12,7 @@ var load = function() {
     document.getElementsByName('notes')[0].value = response.data.notes
     document.getElementsByName('id')[0].value = response.data.id
     document.getElementsByName('diary')[0].value = diary
+    document.getElementById('link').href = "/diary#" + diary
   })
 }
 
