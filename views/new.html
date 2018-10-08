@@ -4,7 +4,9 @@
     <script src="countries.js"></script>
     <script>
       window.onload = function() {
-        document.getElementsByName('diary')[0].value = window.location.hash.substr(1)
+        let diary = window.location.hash.substr(1)
+        document.getElementsByName('diary')[0].value = diary
+        document.getElementById('link').href = "/diary#" + diary
       }
     </script>
   </head>
@@ -23,7 +25,7 @@
       <input type="submit" value="save">
     </form>
     
-    <a href="/">Cancel</a>
+    <a href="/" id="link">Cancel</a>
     
   </body>
 </html>
