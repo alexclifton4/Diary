@@ -37,6 +37,15 @@ var getData = function(path) {
   })
 }
 
+//deletes this entire diary
+var deleteDiary = function(name) {
+  if (confirm("Are you sure?\nThis will delete the diary and all its data")){
+    axios.get('/deleteDiary?name=' + diary).then((response) => {
+      window.location = "/"
+    })
+  }
+}
+
 //deletes a record
 var remove = function(id) {
   //confirm

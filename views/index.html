@@ -1,25 +1,39 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <title>Diary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/css/framework7.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/selector.js"></script>
-    <style>
-    
-.diarySelector {
-  background-color: blue;
-  color: white;
-  padding: 15px 32px;
-}
-    </style>
   </head>
   
   <body>
-    <h1>
-      All Diaries
-    </h1>
-    <button onclick="newDiary()">New Diary</button>
-    <div id="diaries">
-      Loading...
+    <div id="app" class="theme-dark">
+      <div class="view view-main">
+        <div data-name="home" class="page">
+
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="title">Diary</div>
+            </div>
+          </div>
+
+          <div class="page-content">
+            <div class="block">
+              <button onclick="newDiary()" class="button button-fill">New diary</button>
+            </div>
+            
+            <div class="block-title">All diaries</div>
+            <div class="list links-list inset"><ul id="diaries">
+              <div class="preloader"></div>
+            </ul></div>
+          </div>
+          
+        </div>
+      </div>
     </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/js/framework7.min.js"></script>
+    <script type="text/javascript" src="f7.js"></script>
   </body>
 </html>
