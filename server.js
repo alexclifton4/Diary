@@ -16,6 +16,10 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(redirectToHTTPS())
 
+app.all('*', (req, res) => {
+  res.send("Temporarily disabled")
+})
+
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
   response.sendFile(__dirname + '/views/index.html');
