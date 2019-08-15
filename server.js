@@ -7,6 +7,8 @@ var app = express();
 var sqlite = require('sqlite3')
 require('./db.js')()
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS
+const cookieParser = require("cookie-parser")
+const hash = require("password-hash")
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -15,9 +17,27 @@ const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(redirectToHTTPS())
+app.use(cookieParser())
 
-app.all('*', (req, res) => {
-  res.send("Temporarily disabled")
+app.post('/login', (req, res) => {
+  // Check the password
+  console.log(process.env.PASSWORD)
+  console.log(req.body.password)
+  if (hash.verify(req.body.password, process.env.PASSWORD)) {
+    res.cookie("token", process.env.ACCESS_TOKEN, {maxAge: 2147483647})
+    res.redirect("/")
+  } else {
+    res.send("Incorrect Password")
+  }
+})
+
+app.all('*', (req, res, next) => {
+  // Check if token is valid
+  if (req.cookies.token == process.env.ACCESS_TOKEN) {
+    next()
+  } else {
+    res.sendFile(__dirname + '/views/login.html')
+  }
 })
 
 // http://expressjs.com/en/starter/basic-routing.html
