@@ -21,8 +21,6 @@ app.use(cookieParser())
 
 app.post('/login', (req, res) => {
   // Check the password
-  console.log(process.env.PASSWORD)
-  console.log(req.body.password)
   if (hash.verify(req.body.password, process.env.PASSWORD)) {
     res.cookie("token", process.env.ACCESS_TOKEN, {maxAge: 2147483647})
     res.redirect("/")
