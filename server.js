@@ -6,6 +6,7 @@ var express = require('express');
 var app = express();
 var sqlite = require('sqlite3')
 require('./db.js')()
+const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -13,6 +14,11 @@ require('./db.js')()
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
+app.use(redirectToHTTPS())
+
+app.all('*', (req, res) => {
+  res.send("Temporarily disabled")
+})
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
