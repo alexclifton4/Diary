@@ -73,18 +73,6 @@ var viewDates = function() {
   getData("/dates?from=" + from + "&to=" + to)
 }
 
-//search for a country
-var searchCountry = function() {
-  let country = document.getElementById('country').value
-  getData("/search?country=" + country)
-}
-
-//search for a place
-var searchPlace = function() {
-  let place = document.getElementById('place').value
-  getData("/search?place=" + place)
-}
-
 // Normal search
 var normalSearch = function() {
   let field = document.getElementById("searchField")
