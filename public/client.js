@@ -82,4 +82,14 @@ var searchPlace = function() {
   getData("/search?place=" + place)
 }
 
+// Normal search
+var normalSearch = function() {
+  let field = document.getElementById("searchField").value
+  if (field == "country") {
+    alert("yes")
+  } else {
+    alert("no")
+  }
+}
+
 window.onload = init
