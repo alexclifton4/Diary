@@ -131,6 +131,43 @@
                   <h1>
                     Filter by date
                   </h1>
+                  <div class="list">
+                  <ul>
+
+                    <li class="item-content item-input">
+                      <div class="item-media">Search by</div>
+                        <div class="item-inner">
+                          <div class="item-input-wrap">
+                            <select id="searchFieldDate" onchange="searchFieldChangedDate(this)">
+                              <option value="month">Month and Year</option>
+                              <option value="year" selected="selected">Year</option>
+                            </select>
+                          </div>
+                        </div>
+                      </li>
+
+                      <div id="monthWrapper"></div>
+
+                      <li class="item-content item-input">
+                        <div class="item-media">Year</div>
+                        <div class="item-inner">
+                          <div class="item-input-wrap">
+                            <input type="number" id="searchYear">
+                          </div>
+                        </div>
+                      </li>
+                    
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <button class="button button-fill popup-close" onclick="dateSearch()">
+                            Search
+                          </button>
+                        </div>
+                      </li>
+                    
+                    </ul>
+                  </div>
+                  
                 </div>
               </div>
             </div>
