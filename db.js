@@ -2,9 +2,6 @@ const sqlite = require('sqlite3')
 const fs = require('fs')
 
 module.exports = function(){
-  //to reset, delete db file
-  //fs.unlinkSync(__dirname + "/.data/diary.db")
-  
   //see if table exists
   let db = new sqlite.Database('./.data/diary.db')
   

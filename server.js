@@ -220,6 +220,11 @@ app.get('/deleteDiary', (req, res) => {
   db.close()
 })
 
+// Returns a list of all countries that exist in a given diary
+app.get('/allCountries', (req, res) => {
+  let sql = ""
+})
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);

@@ -22,16 +22,15 @@ let dbms = function(req, res, next) {
     //swap a password for the token
     if (req.path == "/dbms/auth") {
       if (hash.verify(req.body.password, process.env.PASSWORD)) {
-        res.send({success: true, token: process.env.TOKEN})
+        res.send({success: true, token: process.env.ACCESS_TOKEN})
       } else {
         res.send({success: false})
       }
     }
     
     //if token is not sent, or root is requested, send dbms html file
-    else if (req.path == "/dbms" || req.header("x-dbms-token") != process.env.TOKEN) {
+    else if (req.path == "/dbms" || req.header("x-dbms-token") != process.env.ACCESS_TOKEN) {
       res.send(fs.readFileSync(__dirname + "/views/dbms.html", "utf8"))
-      console.log("Invalid token - " + req.header("x-"))
     }
     
     else {
