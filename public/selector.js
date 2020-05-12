@@ -7,8 +7,11 @@ var init = function() {
       html = "No diaries"
     } else {
       for (let i in response.data) {
+        if (i != 0) {
+          html += "<hr>"
+        }
         let name = response.data[i].name
-        html += `<a class="external" href="/diary#${name}">${name}</a>`
+        html += `<button onclick="load('${name}')" class="button button-fill">${name}</button>`
       }
     }
     document.getElementById('diaries').innerHTML = html

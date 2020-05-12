@@ -47,6 +47,10 @@ app.get('/diary', function(request, response) {
   response.sendFile(__dirname + '/views/diary.html')
 });
 
+app.get('/test', function(request, response) {
+  response.sendFile(__dirname + '/views/test.html')
+});
+
 app.get('/new', function(request, response) {
   response.sendFile(__dirname + '/views/new.html');
 })
