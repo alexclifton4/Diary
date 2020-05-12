@@ -248,6 +248,9 @@ var dropdown = `<select name="country" id="country">
 <option value="Zimbabwe">Zimbabwe</option>
 </select>`
 
+let validCountries = []
+let countriesAreValid = false
+
 window.addEventListener('load',  function () {
   window.fillCountryDropdown()
 })
@@ -256,5 +259,18 @@ window.fillCountryDropdown = function() {
   let el = document.getElementById('country')
   if (el) {
     el.outerHTML = dropdown
+  }
+}
+
+window.fillCountryDropdownValid = function() {
+  let el = document.getElementById('country') 
+  if (el) {
+    // See if valid countries have been found
+    if (!countriesAreValid) {
+      // Update the countries and the element
+      window.updateValidCountries(el)
+    } else {
+      // Update the element now
+    }
   }
 }

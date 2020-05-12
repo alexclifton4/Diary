@@ -222,7 +222,13 @@ app.get('/deleteDiary', (req, res) => {
 
 // Returns a list of all countries that exist in a given diary
 app.get('/allCountries', (req, res) => {
-  let sql = ""
+  let db = new sqlite.Database('./.data/diary.db')
+  let sql = `SELECT DISTINCT country FROM ${req.query.diary}`
+  
+  db.all(sql, [], (err, data) => {
+    let countries = data.map(x => x.country)
+    res.send(countries)
+  })
 })
 
 // listen for requests :)
