@@ -250,8 +250,8 @@ var dropdown = `<select name="country" id="country">
 <option value="Zimbabwe">Zimbabwe</option>
 </select>`
 
-let validCountries = []
-let countriesAreValid = false
+window.validCountries = []
+window.countriesAreValid = false
 
 window.addEventListener('load',  function () {
   window.fillCountryDropdown()
@@ -280,12 +280,13 @@ window.fillCountryDropdownValid = function() {
 
 window.updateValidCountries = function(el) {
   // Request from server
-  axios.get("/allCountries?diary=" + ).then((response) => {
-    
-  })
-  countriesAreValid = true
+  axios.get("/allCountries?diary=" + window.location.hash.substr(1)).then((response) => {
+    validCountries = response.data
+    countriesAreValid = true
+    console.log("Valid country list updated")
   
-  window.doFillCountryDropdown(el)
+    window.doFillCountryDropdown(el)
+  })
 }
 
 window.doFillCountryDropdown = function(el) {

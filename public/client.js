@@ -55,6 +55,9 @@ var remove = function(id) {
       getData(view)
     })
   }
+  
+  // Valid countries list is now out of date
+  window.countriesAreValid = false
 }
 
 //edits a record
