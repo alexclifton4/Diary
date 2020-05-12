@@ -7,10 +7,10 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.4",
-    "sqlite3": "^4.0.8",
+    "express": "^4.17.1",
+    "sqlite3": "^4.2.0",
     "express-http-to-https": "^1.1.4",
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "^1.4.5",
     "password-hash": "^1.2.2"
   },
   "engines": {
