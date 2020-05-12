@@ -107,7 +107,7 @@ var searchFieldChanged = function(el) {
   } else {
     // change to country input
     document.getElementById("searchInput").innerHTML = `<div id="country"></div>`
-    window.fillCountryDropdown()
+    window.fillCountryDropdownValid()
   }
 }
 

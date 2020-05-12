@@ -1,3 +1,5 @@
+/* globals axios */
+
 var dropdown = `<select name="country" id="country">
 <option value="United Kingdom">United Kingdom</option>
 <option value="Afganistan">Afghanistan</option>
@@ -271,6 +273,29 @@ window.fillCountryDropdownValid = function() {
       window.updateValidCountries(el)
     } else {
       // Update the element now
+      window.doFillCountryDropdown(el)
     }
   }
+}
+
+window.updateValidCountries = function(el) {
+  // Request from server
+  axios.get("/allCountries?diary=" + ).then((response) => {
+    
+  })
+  countriesAreValid = true
+  
+  window.doFillCountryDropdown(el)
+}
+
+window.doFillCountryDropdown = function(el) {
+  el.outerHTML = `<select name="country" id="country"></select>`
+  el = document.getElementById("country")
+  
+  validCountries.forEach((country => {
+    let option = document.createElement("option");
+    option.text = country;
+    option.value = country
+    el.add(option)
+  }))
 }
