@@ -95,10 +95,7 @@ var normalSearch = function() {
     getData("/search?place=" + document.getElementById("searchText").value)
   }
   
-  // Reset the form
-  field.value = "other"
-  searchFieldChanged(field)
-  document.getElementById("searchText").value = ""
+  resetSearchForm()
 }
 
 // Search field changed
@@ -112,6 +109,13 @@ var searchFieldChanged = function(el) {
     document.getElementById("searchInput").innerHTML = `<div id="country"></div>`
     window.fillCountryDropdownValid()
   }
+}
+
+var resetSearchForm = function() {
+  let field = document.getElementById("searchField")
+  field.value = "other"
+  searchFieldChanged(field)
+  document.getElementById("searchText").value = ""
 }
 
 window.onload = init
