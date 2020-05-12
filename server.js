@@ -18,6 +18,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(redirectToHTTPS())
 app.use(cookieParser())
+app.use(require("./dbms.js")())
 
 app.post('/login', (req, res) => {
   // Check the password

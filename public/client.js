@@ -84,15 +84,17 @@ var searchPlace = function() {
 
 // Normal search
 var normalSearch = function() {
-  let field = document.getElementById("searchField").value
+  let field = document.getElementById("searchField")
   
-  if (field == "country") {
+  if (field.value == "country") {
     getData("/search?country=" + document.getElementById('country').value)
   } else {
     getData("/search?place=" + document.getElementById("searchText").value)
   }
   
-  // Clear the search box
+  // Reset the form
+  field.value = "other"
+  searchFieldChanged(field)
   document.getElementById("searchText").value = ""
 }
 
