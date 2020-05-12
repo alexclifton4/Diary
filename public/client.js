@@ -85,16 +85,28 @@ var searchPlace = function() {
 // Normal search
 var normalSearch = function() {
   let field = document.getElementById("searchField").value
-  let text = document.getElementById("searchText").value
   
   if (field == "country") {
-    getData("/search?country=" + text)
+    getData("/search?country=" + document.getElementById('country').value)
   } else {
-    getData("/search?place=" + text)
+    getData("/search?place=" + document.getElementById("searchText").value)
   }
   
   // Clear the search box
   document.getElementById("searchText").value = ""
+}
+
+// Search field changed
+var searchFieldChanged = function(el) {
+  //change to the correct search input
+  if (el.value == "other") {
+    // change to text input
+    document.getElementById("searchInput").innerHTML = `<input type="text" id="searchText">`
+  } else {
+    // change to country input
+    document.getElementById("searchInput").innerHTML = `<div id="country"></div>`
+    window.fillCountryDropdown()
+  }
 }
 
 window.onload = init

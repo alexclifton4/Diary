@@ -97,9 +97,9 @@
                       <div class="item-media">Search by</div>
                         <div class="item-inner">
                           <div class="item-input-wrap">
-                            <select id="searchField">
+                            <select id="searchField" onchange="searchFieldChanged(this)">
                               <option value="country">Country</option>
-                              <option value="other">Place or notes</option>
+                              <option value="other" selected="selected">Place or notes</option>
                             </select>
                           </div>
                         </div>
@@ -108,7 +108,7 @@
                       <li class="item-content item-input">
                         <div class="item-media">Search for</div>
                         <div class="item-inner">
-                          <div class="item-input-wrap">
+                          <div class="item-input-wrap" id="searchInput">
                             <input type="text" id="searchText">
                           </div>
                         </div>
