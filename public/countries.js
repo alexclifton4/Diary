@@ -249,5 +249,8 @@ var dropdown = `<select name="country" id="country">
 </select>`
 
 window.addEventListener('load',  function () {
-  document.getElementById('country').outerHTML = dropdown
+  let el = document.getElementById('country')
+  if (el) {
+    el.outerHTML = dropdown
+  }
 })

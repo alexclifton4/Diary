@@ -92,6 +92,9 @@ var normalSearch = function() {
   } else {
     getData("/search?place=" + text)
   }
+  
+  // Clear the search box
+  document.getElementById("searchText").value = ""
 }
 
 window.onload = init
