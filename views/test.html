@@ -54,12 +54,11 @@
           <div class="page-content">
             <div class="block block-strong inset">
               <div class="row">
-                <a class="col button button-fill external" id="addAnchor"
-                  >Add new</a
-                >
+                <a class="col button button-fill external" id="addAnchor">Add new</a>
                 <button class="col button button-fill popup-open" data-popup=".popup-search" onclick="">
                   Search
                 </button>
+                <button class="col button button-fill" onclick="getData('/data?')">View All</button>
               </div>
             </div>
 
@@ -117,7 +116,7 @@
                     
                       <li class="item-content item-input">
                         <div class="item-inner">
-                          <button class="button button-fill" onclick="normalSearch()">
+                          <button class="button button-fill popup-close" onclick="normalSearch()">
                             Search
                           </button>
                         </div>

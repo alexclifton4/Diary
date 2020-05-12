@@ -85,10 +85,12 @@ var searchPlace = function() {
 // Normal search
 var normalSearch = function() {
   let field = document.getElementById("searchField").value
+  let text = document.getElementById("searchText").value
+  
   if (field == "country") {
-    alert("yes")
+    getData("/search?country=" + text)
   } else {
-    alert("no")
+    getData("/search?place=" + text)
   }
 }
 
