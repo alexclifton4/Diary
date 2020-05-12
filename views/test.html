@@ -1,63 +1,100 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover"
+    />
     <title>Diary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/css/framework7.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/css/framework7.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/dateformat/lib/dateformat.js"></script>
     <script src="/countries.js"></script>
     <script src="/client.js"></script>
   </head>
-  
+
   <body>
     <div id="app" class="theme-dark">
-      
       <div class="panel panel-right panel-cover" style="background-color:black">
-        <div class="block-title">Search for entries</div>
-        
+        <div class="block-title">Options</div>
+
         <div class="block">
-          <button class="button button-fill" onclick="getData('/data?')">View All</button><hr>
-          
-          <button class="button button-fill" onclick="viewDates()">View entries between</button><br>
-          <div class="item-input-wrap"><input type="date" value="2018-01-01" id="fromDate"></div>and<br><br>
-          <div class="item-input-wrap"><input type="date" value="2018-12-31" id="toDate"></div><hr>
-          
-          <button class="button button-fill" onclick="searchCountry()">View entries in</button><br>
-          <div id="country"></div><hr>
-          
-          <button class="button button-fill" onclick="searchPlace()">Search for entries</button><br>
-          <input type="text" placeholder="Enter search term..." id="place">
+          <button class="button button-fill" onclick="deleteDiary()">
+            Delete Diary
+          </button>
+          <hr />
         </div>
       </div>
-      
+
       <div class="view view-main">
         <div data-name="home" class="page">
-
           <div class="navbar">
             <div class="navbar-inner">
-              <div class="left"><a class="link external" href="/"><i class="icon icon-back"></i></a></div>
+              <div class="left">
+                <a class="link external" href="/"
+                  ><i class="icon icon-back"></i
+                ></a>
+              </div>
               <div class="title" id="title">Diary</div>
-              <div class="right"><a class="link panel-open" href="#"><i class="material-icons">search</i></a></div>
+              <div class="right">
+                <a class="link panel-open" href="#"
+                  ><i class="material-icons">settings</i></a
+                >
+              </div>
             </div>
           </div>
 
           <div class="page-content">
-            <div class="block block-strong inset"><div class="row">
-              <a class="col button button-fill external" id="addAnchor">Add new</a>
-              <button class="col button button-fill" onclick="deleteDiary()">Delete Diary</button>
-            </div></div>
-            
+            <div class="block block-strong inset">
+              <div class="row">
+                <a class="col button button-fill external" id="addAnchor"
+                  >Add new</a
+                >
+                <button class="col button button-fill popup-open" data-popup=".popup-search" onclick="">
+                  Search
+                </button>
+              </div>
+            </div>
+
             <div class="data-table" id="table">
               <div class="preloader"></div>
             </div>
           </div>
-          
+        </div>
+
+        <!-- Search Popup -->
+        <div class="popup popup-search theme-dark">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="left">
+                  <a href="#" class="link popup-close">
+                    <i class="material-icons">arrow_back_ios</i>Cancel</a>
+                </div>
+                <div class="title">
+                  Search
+                </div>
+              </div>
+            </div>
+
+            <div class="page-content">
+            
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/js/framework7.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/js/framework7.min.js"
+    ></script>
     <script type="text/javascript" src="f7.js"></script>
   </body>
 </html>
