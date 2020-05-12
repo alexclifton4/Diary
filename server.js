@@ -9,6 +9,7 @@ require('./db.js')()
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS
 const cookieParser = require("cookie-parser")
 const hash = require("password-hash")
+const dbms = require("./dbms.js")
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -16,9 +17,10 @@ const hash = require("password-hash")
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
+app.use(express.json());
 app.use(redirectToHTTPS())
 app.use(cookieParser())
-app.use(require("./dbms.js")())
+app.use(dbms(__dirname + "/.data/diary.db"))
 
 app.post('/login', (req, res) => {
   // Check the password
