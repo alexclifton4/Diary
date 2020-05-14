@@ -17,7 +17,7 @@ const database = require('./db.js');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
-//app.use(redirectToHTTPS())
+app.use(redirectToHTTPS())
 app.use(cookieParser())
 
 app.post('/login', (req, res) => {
@@ -233,6 +233,6 @@ app.get('/allCountries', (req, res) => {
 })
 
 // listen for requests :)
-var listener = app.listen(5555 | process.env.PORT, function() {
+var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
