@@ -17,7 +17,7 @@ const database = require('./db.js');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
-app.use(redirectToHTTPS())
+//app.use(redirectToHTTPS())
 app.use(cookieParser())
 
 app.post('/login', (req, res) => {
