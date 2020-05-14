@@ -151,7 +151,7 @@ app.get('/search', function(request, response) {
   if (country) {
     search = ` WHERE country LIKE '${country}'`
   } else {
-    search = ` WHERE place LIKE '%${place}%' OR notes ILIKE '%${place}%'`
+    search = ` WHERE place ILIKE '%${place}%' OR notes ILIKE '%${place}%'`
   }
   
   //get data from db
