@@ -151,7 +151,7 @@ app.get('/search', function(request, response) {
   if (country) {
     search = ` WHERE country LIKE '${country}'`
   } else {
-    search = ` WHERE place LIKE '%${place}%' OR notes LIKE '%${place}%'`
+    search = ` WHERE place LIKE '%${place}%' OR notes ILIKE '%${place}%'`
   }
   
   //get data from db
@@ -233,6 +233,6 @@ app.get('/allCountries', (req, res) => {
 })
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function() {
+var listener = app.listen(process.env.PORT || 5555, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
