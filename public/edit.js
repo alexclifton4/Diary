@@ -6,7 +6,7 @@ var load = function() {
   let diary = hash[1]
   axios.get('/single?id=' + id + "&diary=" + diary).then((response) => {
     //fill in form
-    document.getElementsByName('date')[0].value = new Date(response.data.date).toJSON().slice(0,10);
+    document.getElementsByName('date')[0].value = new Date(parseInt(response.data.date)).toJSON().slice(0,10);
     document.getElementsByName('country')[0].value = response.data.country
     document.getElementsByName('place')[0].value = response.data.place
     document.getElementsByName('notes')[0].value = response.data.notes

@@ -4,12 +4,11 @@
 // init project
 var express = require('express');
 var app = express();
-var sqlite = require('sqlite3')
-require('./db.js')()
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS
 const cookieParser = require("cookie-parser")
 const hash = require("password-hash")
-const dbms = require("./dbms.js")
+
+const database = require('./db.js');
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -20,7 +19,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 app.use(redirectToHTTPS())
 app.use(cookieParser())
-app.use(dbms(__dirname + "/.data/diary.db"))
 
 app.post('/login', (req, res) => {
   // Check the password
@@ -65,10 +63,12 @@ app.post('/new', function(request, response) {
   //make sure fields aren't blank
   if (!(date == "" || country == "" || place == "")) {
     //insert into db
-    let sql = `INSERT INTO ${diary} (date, country, place, notes) VALUES ("${date}", "${country}", "${place}", "${notes}");`
-    let db = new sqlite.Database('./.data/diary.db')
-    db.run(sql, [], (err) => {if (err) throw err});
-    db.close()
+    let sql = `INSERT INTO ${diary} (date, country, place, notes) VALUES ('${date}', '${country}', '${place}', '${notes}');`
+    let db = database.connect();
+    db.query(sql, (err) => {
+        if (err) throw err;
+        db.end();
+    });
   }
   
   response.redirect('/diary#' + diary)
@@ -90,10 +90,12 @@ app.post('/edit', function(request, response) {
   //make sure fields aren't blank
   if (!(date == "" || country == "" || place == "")) {
     //insert into db
-    let sql = `UPDATE ${diary} SET date="${date}", country="${country}", place="${place}", notes="${notes}" WHERE rowid="${id}";`
-    let db = new sqlite.Database('./.data/diary.db')
-    db.run(sql, [], (err) => {if (err) throw err});
-    db.close()
+    let sql = `UPDATE ${diary} SET date=${date}, country='${country}', place='${place}', notes='${notes}' WHERE rowid=${id};`
+    let db = database.connect();
+    db.query(sql, (err) => {
+        if (err) throw err;
+        db.end()
+    });
   }
   
   response.redirect('/diary#' + diary)
@@ -103,25 +105,25 @@ app.get('/data', function(request, response) {
   let diary = request.query.diary
   //get data from db
   let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} ORDER BY date DESC, country ASC, place ASC`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.all(sql, [], (err, data) => {
+  let db = database.connect();
+  db.query(sql, (err, data) => {
     if (err) throw err;
-    response.send(data)
+    response.send(data.rows)
+    db.end();
   })
-db.close()
 })
 
 app.get('/single', function(request, response) {
   let id = request.query.id
   let diary = request.query.diary
   //get data from db
-  let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} WHERE rowid="${id}";`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.get(sql, [], (err, data) => {
+  let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} WHERE rowid=${id};`
+  let db = database.connect();
+  db.query(sql, (err, data) => {
     if (err) throw err;
-    response.send(data)
+    response.send(data.rows[0])
+    db.end();
   })
-db.close()
 })
 
 app.get('/dates', function(request, response) {
@@ -132,12 +134,12 @@ app.get('/dates', function(request, response) {
   
   //get data from db
   let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} WHERE date>${from} AND date<${to} ORDER BY date DESC, country ASC, place ASC`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.all(sql, [], (err, data) => {
+  let db = database.connect()
+  db.query(sql, (err, data) => {
     if (err) throw err;
-    response.send(data)
+    response.send(data.rows)
+    db.end()
   })
-db.close()
 })
 
 app.get('/search', function(request, response) {
@@ -147,87 +149,90 @@ app.get('/search', function(request, response) {
   let diary = request.query.diary
   let search
   if (country) {
-    search = ' WHERE country LIKE "' + country + '"'
+    search = ` WHERE country LIKE '${country}'`
   } else {
-    search = ' WHERE place LIKE "%' + place + '%" OR notes LIKE "%' + place + '%"'
+    search = ` WHERE place LIKE '%${place}%' OR notes LIKE '%${place}%'`
   }
   
   //get data from db
   let sql = "SELECT rowid AS id, date, country, place, notes FROM " + diary + search + " ORDER BY date DESC, country ASC, place ASC"
-  let db = new sqlite.Database('./.data/diary.db')
-  db.all(sql, [], (err, data) => {
+  let db = database.connect()
+  db.query(sql, [], (err, data) => {
     if (err) throw err;
-    response.send(data)
+    response.send(data.rows)
+    db.end()
   })
-db.close()
 })
 
 app.get('/delete', function(request, response) {
   let sql = `DELETE FROM ${request.query.diary} WHERE rowid=${request.query.id}`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.run(sql, [], (err) => {if (err) throw err});
-  db.close()
+  let db = database.connect()
+  db.query(sql, (err) => {
+      if (err) throw err
+      db.end();
+  });
   
   response.redirect('/')
 })
 
 app.get('/allDiaries', (req, res) => {
   let sql = "SELECT name FROM diaries"
-  let db = new sqlite.Database('./.data/diary.db')
-  db.all(sql, [], (err, data) => {
+  let db = database.connect()
+  db.query(sql, (err, data) => {
     if (err) throw err;
-    res.send(data)
+    res.send(data.rows)
+    db.end()
   })
-  db.close()
 })
 
 app.get('/newDiary', (req, res) => {
   let name = req.query.name
   if (name != "diaries" && name!= "null") {
     //insert into master table
-    let sql = `INSERT INTO diaries (name) VALUES ("${name}")`
-    let db = new sqlite.Database('./.data/diary.db')
-    db.run(sql, [], (err) => {
+    let sql = `INSERT INTO diaries (name) VALUES ('${name}')`
+    let db = database.connect()
+    db.query(sql, (err) => {
       if (err) throw err
       //create new table
-      let sql = `CREATE TABLE ${name} (date integer, country text, place text, notes text);`;
-      db.run(sql, [], (err) => {
+      let sql = `CREATE TABLE ${name} (rowid serial primary key, date bigint, country text, place text, notes text);`;
+      db.query(sql, (err) => {
         if (err) throw err
         res.send("ok")
+        db.end()
       })
     });
-    db.close()
   }
 })
 
 app.get('/deleteDiary', (req, res) => {
   //delete from master table
-  let sql = `DELETE FROM diaries WHERE name="${req.query.name}"`
-  let db = new sqlite.Database('./.data/diary.db')
-  db.run(sql, [], (err) => {
+  let sql = `DELETE FROM diaries WHERE name='${req.query.name}'`
+  let db = database.connect()
+  db.query(sql, (err) => {
     if (err) throw err
     //drop table
     sql = "DROP TABLE " + req.query.name
-    db.run(sql, [], (err) => {
+    db.query(sql, (err) => {
       if (err) throw err
       res.send("ok")
+      db.end();
     })
   })
-  db.close()
 })
 
 // Returns a list of all countries that exist in a given diary
 app.get('/allCountries', (req, res) => {
-  let db = new sqlite.Database('./.data/diary.db')
+  let db = database.connect()
   let sql = `SELECT DISTINCT country FROM ${req.query.diary}`
   
-  db.all(sql, [], (err, data) => {
-    let countries = data.map(x => x.country)
+  db.query(sql, (err, data) => {
+    let countries = data.rows.map(x => x.country)
     res.send(countries)
+    db.end();
   })
 })
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function() {
+var listener = app.listen(5555 | process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });

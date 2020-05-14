@@ -25,7 +25,7 @@ var getData = function(path) {
   
       for (let i in data) {
         let x = data[i]
-        let date = dateFormat(x.date, "dS mmm. yyyy")
+        let date = dateFormat(parseInt(x.date), "dS mmm. yyyy")
         let buttons = `<div class="row"><button class="button col button-fill button-small" onclick="edit(${x.id})"><i class="material-icons">edit</i></button></td>`
         buttons += `<td><button class="button col button-fill button-small" onclick="remove(${x.id})"><i class="material-icons">delete</i></button></div>`
         let notes = x.notes.replace(/\r\n/g, "<br>")
