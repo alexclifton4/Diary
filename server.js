@@ -17,7 +17,7 @@ const database = require('./db.js');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
-app.use(redirectToHTTPS())
+app.use(redirectToHTTPS([/localhost:8080/]))
 app.use(cookieParser())
 
 app.post('/login', (req, res) => {
@@ -63,7 +63,7 @@ app.post('/new', function(request, response) {
   //make sure fields aren't blank
   if (!(date == "" || country == "" || place == "")) {
     //insert into db
-    let sql = `INSERT INTO ${diary} (date, country, place, notes) VALUES ('${date}', '${country}', '${place}', '${notes}');`
+    let sql = `INSERT INTO "${diary}" (date, country, place, notes) VALUES ('${date}', '${country}', '${place}', '${notes}');`
     let db = database.connect();
     db.query(sql, (err) => {
         if (err) throw err;
@@ -90,7 +90,7 @@ app.post('/edit', function(request, response) {
   //make sure fields aren't blank
   if (!(date == "" || country == "" || place == "")) {
     //insert into db
-    let sql = `UPDATE ${diary} SET date=${date}, country='${country}', place='${place}', notes='${notes}' WHERE rowid=${id};`
+    let sql = `UPDATE "${diary}" SET date=${date}, country='${country}', place='${place}', notes='${notes}' WHERE rowid=${id};`
     let db = database.connect();
     db.query(sql, (err) => {
         if (err) throw err;
@@ -104,7 +104,7 @@ app.post('/edit', function(request, response) {
 app.get('/data', function(request, response) {
   let diary = request.query.diary
   //get data from db
-  let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} ORDER BY date DESC, country ASC, place ASC`
+  let sql = `SELECT rowid AS id, date, country, place, notes FROM "${diary}" ORDER BY date DESC, country ASC, place ASC`
   let db = database.connect();
   db.query(sql, (err, data) => {
     if (err) throw err;
@@ -117,7 +117,7 @@ app.get('/single', function(request, response) {
   let id = request.query.id
   let diary = request.query.diary
   //get data from db
-  let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} WHERE rowid=${id};`
+  let sql = `SELECT rowid AS id, date, country, place, notes FROM "${diary}" WHERE rowid=${id};`
   let db = database.connect();
   db.query(sql, (err, data) => {
     if (err) throw err;
@@ -133,7 +133,7 @@ app.get('/dates', function(request, response) {
   let diary = request.query.diary
   
   //get data from db
-  let sql = `SELECT rowid AS id, date, country, place, notes FROM ${diary} WHERE date>${from} AND date<${to} ORDER BY date DESC, country ASC, place ASC`
+let sql = `SELECT rowid AS id, date, country, place, notes FROM "${diary}" WHERE date>${from} AND date<${to} ORDER BY date DESC, country ASC, place ASC`
   let db = database.connect()
   db.query(sql, (err, data) => {
     if (err) throw err;
@@ -155,7 +155,7 @@ app.get('/search', function(request, response) {
   }
   
   //get data from db
-  let sql = "SELECT rowid AS id, date, country, place, notes FROM " + diary + search + " ORDER BY date DESC, country ASC, place ASC"
+  let sql = `SELECT rowid AS id, date, country, place, notes FROM "${diary}" ${search} ORDER BY date DESC, country ASC, place ASC`
   let db = database.connect()
   db.query(sql, [], (err, data) => {
     if (err) throw err;
@@ -165,7 +165,7 @@ app.get('/search', function(request, response) {
 })
 
 app.get('/delete', function(request, response) {
-  let sql = `DELETE FROM ${request.query.diary} WHERE rowid=${request.query.id}`
+  let sql = `DELETE FROM "${request.query.diary}" WHERE rowid=${request.query.id}`
   let db = database.connect()
   db.query(sql, (err) => {
       if (err) throw err
@@ -194,7 +194,7 @@ app.get('/newDiary', (req, res) => {
     db.query(sql, (err) => {
       if (err) throw err
       //create new table
-      let sql = `CREATE TABLE ${name} (rowid serial primary key, date bigint, country text, place text, notes text);`;
+      let sql = `CREATE TABLE "${name}" (rowid serial primary key, date bigint, country text, place text, notes text);`;
       db.query(sql, (err) => {
         if (err) throw err
         res.send("ok")
@@ -211,7 +211,7 @@ app.get('/deleteDiary', (req, res) => {
   db.query(sql, (err) => {
     if (err) throw err
     //drop table
-    sql = "DROP TABLE " + req.query.name
+    sql = `DROP TABLE ${req.query.name}`
     db.query(sql, (err) => {
       if (err) throw err
       res.send("ok")
@@ -223,7 +223,7 @@ app.get('/deleteDiary', (req, res) => {
 // Returns a list of all countries that exist in a given diary
 app.get('/allCountries', (req, res) => {
   let db = database.connect()
-  let sql = `SELECT DISTINCT country FROM ${req.query.diary}`
+  let sql = `SELECT DISTINCT country FROM "${req.query.diary}"`
   
   db.query(sql, (err, data) => {
     let countries = data.rows.map(x => x.country)
@@ -233,6 +233,6 @@ app.get('/allCountries', (req, res) => {
 })
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT || 5555, function() {
+var listener = app.listen(process.env.PORT || 8080, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
