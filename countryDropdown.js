@@ -1,6 +1,4 @@
-/* globals axios */
-
-var dropdown = `<select name="country" id="country">
+module.exports = `<select class="form-control" id="editCountry">
 <option value="United Kingdom">United Kingdom</option>
 <option value="Afganistan">Afghanistan</option>
 <option value="Albania">Albania</option>
@@ -249,54 +247,3 @@ var dropdown = `<select name="country" id="country">
 <option value="Zambia">Zambia</option>
 <option value="Zimbabwe">Zimbabwe</option>
 </select>`
-
-window.validCountries = []
-window.countriesAreValid = false
-
-window.addEventListener('load',  function () {
-  window.fillCountryDropdown()
-})
-
-window.fillCountryDropdown = function() {
-  let el = document.getElementById('country')
-  if (el) {
-    el.outerHTML = dropdown
-  }
-}
-
-window.fillCountryDropdownValid = function() {
-  let el = document.getElementById('country') 
-  if (el) {
-    // See if valid countries have been found
-    if (!countriesAreValid) {
-      // Update the countries and the element
-      window.updateValidCountries(el)
-    } else {
-      // Update the element now
-      window.doFillCountryDropdown(el)
-    }
-  }
-}
-
-window.updateValidCountries = function(el) {
-  // Request from server
-  axios.get("/allCountries?diary=" + window.location.hash.substr(1)).then((response) => {
-    validCountries = response.data
-    countriesAreValid = true
-    console.log("Valid country list updated")
-  
-    window.doFillCountryDropdown(el)
-  })
-}
-
-window.doFillCountryDropdown = function(el) {
-  el.outerHTML = `<select name="country" id="country"></select>`
-  el = document.getElementById("country")
-  
-  validCountries.forEach((country => {
-    let option = document.createElement("option");
-    option.text = country;
-    option.value = country
-    el.add(option)
-  }))
-}

@@ -1,8 +1,6 @@
 {
   "name": "Diary",
-  "version": "0.0.1",
-  "description": "Simple program to store and search diary entries",
-  "main": "server.js",
+  "version": "1.0.0",
   "scripts": {
     "start": "node server.js"
   },
@@ -11,18 +9,6 @@
     "express": "^4.17.1",
     "express-http-to-https": "^1.1.4",
     "password-hash": "^1.2.2",
-    "pg": "^8.2.0"
-  },
-  "engines": {
-    "node": "8.x"
-  },
-  "repository": {
-    "url": "https://github.com/alexclifton4/Diary"
-  },
-  "license": "MIT",
-  "keywords": [
-    "node",
-    "glitch",
-    "express"
-  ]
+    "pg": "^8.5.1"
+  }
 }

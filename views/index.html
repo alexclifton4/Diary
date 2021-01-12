@@ -1,39 +1,130 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-    <title>Diary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/css/framework7.min.css">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/selector.js"></script>
-  </head>
-  
-  <body>
-    <div id="app" class="theme-dark">
-      <div class="view view-main">
-        <div data-name="home" class="page">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-          <div class="navbar">
-            <div class="navbar-inner">
-              <div class="title">Diary</div>
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://alexclifton.co.uk/style.css">
+    
+    <script src="https://unpkg.com/dateformat@3.0.3/lib/dateformat.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/diary.js"></script>
+
+    <title>Diary</title>
+  </head>
+  <body onload="loadDiary()">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <a href="/" class="navbar-brand mb-0 h1">Diary</a>
+    </nav>
+    
+    <main role="main" class="container">
+      <!-- Loading page -->
+      <div class="content" id="loading">
+        <div class="spinner-border"></div>
+      </div>
+      
+      <!-- Diary page -->
+      <div class="content" id="diary" style="display: none">
+      
+        <div class="card" style="margin-bottom: 5px">
+          <!-- Filters -->
+          <div class="card-body">
+            <h4>Filters</h4>
+            <div class="container">
+              <div class="row">
+                <div class="col-sm">
+                  <h5>Date</h5>
+                  <select id="yearFilter" multiple onchange="yearChanged(this)"></select>
+                  <select id="monthFilter" multiple onchange="monthChanged(this)">
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                  </select>
+                </div>
+                <div class="col-sm">
+                  <h5>Country</h5>
+                  <select id="countryFilter" multiple onchange="countryChanged(this)"></select>
+                </div>
+                <div class="col-sm">
+                  <h5>Search</h5>
+                  <input type="text" onchange="searchChanged(this)">
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="page-content">
-            <div class="block">
-              <button onclick="newDiary()" class="button button-fill">New diary</button>
+        </div>
+      
+        <table class='table table-dark table-striped'>
+          <thead class="thead-dark">
+            <tr>
+              <th style="width: 20%">Date</th>
+              <th>Country</th>
+              <th>Place</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="diaryBody"></tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary fixed-bottom" onclick="showNewView()">Add New</button>
+      </div>
+      
+      <!-- Entry page -->
+      <div class="content" id="entry" style="display: none">
+        <form>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Date</span>
             </div>
-            
-            <div class="block-title">All diaries</div>
-            <div class="list links-list inset"><ul id="diaries">
-              <div class="preloader"></div>
-            </ul></div>
+            <input type="date" id="editDate" class="form-control">
           </div>
           
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Country</span>
+            </div>
+            {countryDropdown}
+          </div>
+          
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Place</span>
+            </div>
+            <input type="text" id="editPlace" class="form-control">
+          </div>
+          
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Notes</span>
+            </div>
+            <textarea id="editNotes" class="form-control"></textarea>
+          </div>
+
+        </form>
+        
+        <button type="button" class="btn btn-primary float-left" onclick="showDiary()">Back</button>
+        <div class="float-right">
+        <button type="button" class="btn btn-success" onclick="save()">Save</button>
+      <button type="button" class="btn btn-danger" id="btnDelete" onclick="deleteEntry()">Delete</button>
         </div>
       </div>
-    </div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/framework7/3.5.2/js/framework7.min.js"></script>
-    <script type="text/javascript" src="f7.js"></script>
-    </body>
+      
+    </main>
+
+    <!-- JavaScript - JQuery then Bootstrap -->
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
 </html>

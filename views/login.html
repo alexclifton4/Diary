@@ -1,14 +1,37 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Login to Diary</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://alexclifton.co.uk/style.css">
+    
+    <script src="https://unpkg.com/dateformat@3.0.3/lib/dateformat.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/diary.js"></script>
+
+    <title>Diary</title>
   </head>
-  <body>
-    <h1>
-      Please enter the password to continue
-    </h1>
-    <form action="/login" method="post">
-      <label>Password: <input type="password" name="password"></label><br>
-      <input type="submit" value="Continue">
-    </form>
+  <body onload="loadDiary()">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <a href="/" class="navbar-brand mb-0 h1">Diary</a>
+    </nav>
+    
+    <main role="main" class="container">
+      <div class="content">
+      <h1>Login</h1>
+        <form action="/login" method="post">
+          <input type="password" name="password"><hr>
+          <input type="submit">
+        </form>
+        </div>
+    </main>
+
+    <!-- JavaScript - JQuery then Bootstrap -->
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
 </html>
