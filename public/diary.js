@@ -153,6 +153,20 @@ window.searchChanged = function(search) {
   populateDiary()
 }
 
+// Clear all filters
+window.clearFilters = function() {
+  document.getElementById("yearFilter").value = ""
+  document.getElementById("monthFilter").value = ""
+  document.getElementById("countryFilter").value = ""
+  document.getElementById("search").value = ""
+  filters.year = []
+  filters.month = []
+  filters.country = []
+  filters.search = ""
+  
+  populateDiary()
+}
+
 // Callback save button
 window.save = function() {
   // Get details from form
