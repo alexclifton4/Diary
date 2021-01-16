@@ -12,12 +12,14 @@ const countryDropdown = require("./countryDropdown.js")
 const html = fs.readFileSync(__dirname + "/views/index.html").toString().replace("{countryDropdown}", countryDropdown)
 
 app.use(express.static(__dirname + "/public"))
+app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use(redirectToHTTPS([/localhost:8080/]))
 app.use(cookieParser())
 
 app.post('/login', (req, res) => {
   // Check the password
+  console.log(req.body.password)
   if (hash.verify(req.body.password, process.env.PASSWORD)) {
     res.cookie("token", process.env.ACCESS_TOKEN, {maxAge: 2147483647})
     res.redirect("/")
