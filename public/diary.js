@@ -76,7 +76,7 @@ let populateDiary = function() {
       html += `<td>${dateFormat(parseInt(entry.date), "dS mmm. yyyy")}</td>`
       html += `<td>${entry.country}</td>`
       html += `<td>${entry.place}</td>`
-      html += `<td>${entry.notes}</td>`
+    html += `<td><div class="notes">${entry.notes}</div></td>`
       html += `</tr>`
     })
     
