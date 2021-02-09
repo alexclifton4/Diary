@@ -101,7 +101,7 @@ window.showEntry = function(id) {
 window.showNewView = function() {
   // Clear the new form
   document.getElementById("editDate").value = ""
-  //document.getElementById("editCountry").value = ""
+  document.getElementById("editCountry").value = "United Kingdom"
   document.getElementById("editPlace").value = ""
   document.getElementById("editNotes").value = ""
   
