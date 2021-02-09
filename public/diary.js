@@ -29,14 +29,6 @@ window.loadDiary = function() {
       option.value = year
       yearFilter.add(option)
     })
-    // Add filter for countries
-    let countryFilter = document.getElementById("countryFilter")
-    response.data.country.forEach((country) => {
-      let option = document.createElement("option")
-      option.text = country
-      option.value = country
-      countryFilter.add(option)
-    })
   })
 }
 
@@ -59,15 +51,12 @@ let populateDiary = function() {
       if (filters.month.length != 0 && !filters.month.includes(month)) {
         return
       }
-      // Country
-      if (filters.country.length != 0 && !filters.country.includes(entry.country)) {
-        return
-      }
       
       // Search
+      let countrySearch = entry.country.toLowerCase().indexOf(filters.search) == -1
       let placeSearch = entry.place.toLowerCase().indexOf(filters.search) == -1
       let notesSearch = entry.notes.toLowerCase().indexOf(filters.search) == -1
-      if (filters.search != "" && placeSearch && notesSearch) {
+      if (filters.search != "" && countrySearch && placeSearch && notesSearch) {
         return
       }
       
@@ -139,14 +128,6 @@ window.monthChanged = function(select) {
   populateDiary()
 }
 
-// Country filter changed
-window.countryChanged = function(select) {
-  // Get the selected countries
-  selected = Array.prototype.filter.apply(select.options,[function(o) {return o.selected}]).map((x) => x.value)
-  filters.country = selected
-  populateDiary()
-}
-
 // Search field changed
 window.searchChanged = function(search) {
   filters.search = search.value.toLowerCase()
@@ -157,7 +138,6 @@ window.searchChanged = function(search) {
 window.clearFilters = function() {
   document.getElementById("yearFilter").value = ""
   document.getElementById("monthFilter").value = ""
-  document.getElementById("countryFilter").value = ""
   document.getElementById("search").value = ""
   filters.year = []
   filters.month = []

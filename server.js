@@ -65,23 +65,15 @@ app.get("/entry", (req, res) => {
 
 // Send unique values for filters
 app.get("/filterValues", (req, res) => {
+  let sql = "SELECT DISTINCT EXTRACT(year FROM to_timestamp( CAST( date AS bigint ) / 1000 )) AS year FROM entries ORDER BY year;"
   let db = database.connect()
-  
-  let sql1 = "SELECT DISTINCT country FROM entries"
-  let sql2 = "SELECT DISTINCT EXTRACT(year FROM to_timestamp( CAST( date AS bigint ) / 1000 )) AS year FROM entries ORDER BY year;"
-  let query1 = db.query(sql1)
-  let query2 = db.query(sql2)
-  
-  // Wait for all queries to complete
-  Promise.all([query1, query2]).then((results) => {
+  db.query(sql, (err, data) => {
+    if (err) throw err
     let filters = {}
-    filters.country = results[0].rows.map(x => x.country)
-    filters.year = results[1].rows.map(x => x.year)
+    filters.year = data.rows.map(x => x.year)
     
     res.send(filters)
     db.end()
-  }).catch((err) => {
-    console.error(err)
   })
 })
 
