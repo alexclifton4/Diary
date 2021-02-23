@@ -2,9 +2,8 @@ let diaryEntries;
 let saveMode;
 let currentId;
 let filters = {}
-filters.year = []
-filters.month = []
-filters.country = []
+filters.year = "all"
+filters.month = "all"
 filters.search = ""
 
 // Show all entries
@@ -27,8 +26,22 @@ window.loadDiary = function(openNewView) {
   axios.get("/filterValues").then((response) => {
     // Add filter for years
     let yearFilter = document.getElementById("yearFilter")
+    // Add default options
+    let option = document.createElement("option")
+    option.text = "Year"
+    option.value = "all"
+    option.disabled = true
+    option.selected = true
+    yearFilter.add(option)
+    
+    option = document.createElement("option")
+    option.text = "View All"
+    option.value = "all"
+    yearFilter.add(option)
+    
+    // Add each year
     response.data.year.forEach((year) => {
-      let option = document.createElement("option")
+      option = document.createElement("option")
       option.text = year
       option.value = year
       yearFilter.add(option)
@@ -47,12 +60,12 @@ let populateDiary = function() {
       // Year
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
-      if (filters.year.length != 0 && !filters.year.includes(year)) {
+      if (filters.year != "all" && filters.year != year) {
         return
       }
       // Month
       let month = date.getMonth().toString()
-      if (filters.month.length != 0 && !filters.month.includes(month)) {
+      if (filters.month != "all" && filters.month != month) {
         return
       }
       
@@ -120,17 +133,15 @@ window.showNewView = function(retainValues) {
 
 // Year filter changed
 window.yearChanged = function(select) {
-  // Get the selected years
-  selected = Array.prototype.filter.apply(select.options,[function(o) {return o.selected}]).map((x) => x.value)
-  filters.year = selected
+  // Get the selected year
+  filters.year = select.value
   populateDiary()
 }
 
 // Month filter changed
 window.monthChanged = function(select) {
-  // Get the selected years
-  selected = Array.prototype.filter.apply(select.options,[function(o) {return o.selected}]).map((x) => x.value)
-  filters.month = selected
+  // Get the selected month
+  filters.month = select.value
   populateDiary()
 }
 
@@ -142,12 +153,11 @@ window.searchChanged = function(search) {
 
 // Clear all filters
 window.clearFilters = function() {
-  document.getElementById("yearFilter").value = ""
-  document.getElementById("monthFilter").value = ""
+  document.getElementById("yearFilter").value = "all"
+  document.getElementById("monthFilter").value = "all"
   document.getElementById("search").value = ""
-  filters.year = []
-  filters.month = []
-  filters.country = []
+  filters.year = "all"
+  filters.month = "all"
   filters.search = ""
   
   populateDiary()

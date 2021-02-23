@@ -49,8 +49,10 @@
               <div class="row">
                 <div class="col-sm">
                   <h5>Date</h5>
-                  <select id="yearFilter" multiple onchange="yearChanged(this)"></select>
-                  <select id="monthFilter" multiple onchange="monthChanged(this)">
+                  <select id="yearFilter" onchange="yearChanged(this)"></select>
+                  <select id="monthFilter" onchange="monthChanged(this)">
+                    <option disabled selected value="all">Month</option>
+                    <option value="all">View All</option>
                     <option value="0">January</option>
                     <option value="1">February</option>
                     <option value="2">March</option>
