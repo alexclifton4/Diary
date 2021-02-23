@@ -8,7 +8,7 @@ filters.country = []
 filters.search = ""
 
 // Show all entries
-window.loadDiary = function() {
+window.loadDiary = function(openNewView) {
   // Switch to loading page
   switchToView("loading")
   
@@ -16,7 +16,11 @@ window.loadDiary = function() {
   axios.get("/diary").then((response) => {
     diaryEntries = response.data
     populateDiary()
-    switchToView("diary")
+    if (openNewView) {
+      showNewView(true)
+    } else {
+      switchToView("diary")
+    }
   })
   
   // Get values for the filters
@@ -98,10 +102,12 @@ window.showEntry = function(id) {
 }
 
 // Show the new view
-window.showNewView = function() {
+window.showNewView = function(retainValues) {
   // Clear the new form
-  document.getElementById("editDate").value = ""
-  document.getElementById("editCountry").value = "United Kingdom"
+  if (!retainValues) {
+    document.getElementById("editDate").value = ""
+    document.getElementById("editCountry").value = "United Kingdom"
+  }
   document.getElementById("editPlace").value = ""
   document.getElementById("editNotes").value = ""
   
@@ -176,7 +182,7 @@ let newEntry = function(date, country, place, notes) {
   // Send to server
   axios.post("/new", {date: date, country: country, place: place, notes: notes}).then((response) => {
     // Reload the diary
-    window.loadDiary()
+    window.loadDiary(true)
   })
 }
 
