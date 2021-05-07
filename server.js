@@ -14,7 +14,7 @@ const html = fs.readFileSync(__dirname + "/views/index.html").toString().replace
 app.use(express.static(__dirname + "/public"))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
-app.use(redirectToHTTPS([/localhost:8080/]))
+app.use(redirectToHTTPS([/localhost:(\d{4})/]))
 app.use(cookieParser())
 
 app.post('/login', (req, res) => {

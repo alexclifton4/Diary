@@ -10,6 +10,7 @@ filters.search = ""
 window.loadDiary = function(openNewView) {
   // Switch to loading page
   switchToView("loading")
+  window.statsLoaded = false
   
   // Get the data from the server
   axios.get("/diary").then((response) => {
@@ -207,11 +208,81 @@ window.deleteEntry = function() {
   }
 }
 
+// Show statistics page
+window.showStats = function() {
+  // Don't recalculate if already done
+  if (window.statsLoaded) {
+    switchToView("stats")
+    return
+  }
+  
+  // Count the entries
+  $("#statTotal").html(diaryEntries.length)
+  
+  let years = {}
+  let min = Infinity
+  let max = 0
+  
+  // Loop through each entry
+  diaryEntries.forEach(entry => {
+    // Get the year
+    let year = new Date(parseInt(entry.date)).getFullYear()
+    
+    // Incrememt count
+    years[year] = years[year] ? years[year] + 1 : 1
+    
+    // Check min and max
+    min = year < min ? year : min
+    max = year > max ? year : max
+  })
+  
+  // Fill in the gaps
+  for (let i = min; i <= max; i++) {
+    if (!years[i]) {
+      years[i] = 0
+    }
+  }
+  
+  // Split into labels and values
+  let labels = []
+  let values = []
+  for (let year in years) {
+    labels.push(year)
+    values.push(years[year])
+  }
+  
+  // Create the graph
+  let config = {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: values,
+        backgroundColor: 'rgba(217, 22, 63)',
+        borderColor: 'rgba(217, 22, 63)'
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  }
+  
+  let chart = new Chart('statYears', config)
+  
+  window.statsLoaded = true
+  switchToView("stats")
+}
+
 let switchToView = function(view) {
   // Hide all the views
   document.getElementById("loading").style.display = "none"
   document.getElementById("diary").style.display = "none"
   document.getElementById("entry").style.display = "none"
+  document.getElementById("stats").style.display = "none"
   
   // Show the correct view
   document.getElementById(view).style.display = "block"
