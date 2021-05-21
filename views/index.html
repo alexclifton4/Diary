@@ -13,6 +13,7 @@
     <script src="https://unpkg.com/dateformat@3.0.3/lib/dateformat.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/diary.js"></script>
 
     <title>Diary</title>
@@ -146,6 +147,8 @@
         <h1>Statistics</h1>
         <p><b>Total entries:</b> <span id="statTotal"></span></p>
         <canvas id="statYears"></canvas>
+        <div id="statCountries" style="width: 100%;"></div>
+      <br>
         <button class="btn btn-primary" onclick="showDiary()">Back</button>
       </div>
       

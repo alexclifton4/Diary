@@ -222,18 +222,29 @@ window.showStats = function() {
   let years = {}
   let min = Infinity
   let max = 0
+  let countries = {}
   
   // Loop through each entry
   diaryEntries.forEach(entry => {
     // Get the year
     let year = new Date(parseInt(entry.date)).getFullYear()
     
-    // Incrememt count
+    // Increment count
     years[year] = years[year] ? years[year] + 1 : 1
     
     // Check min and max
     min = year < min ? year : min
     max = year > max ? year : max
+    
+    // Get the country
+    let country = entry.country
+    // The google chart API expects 'United States', not 'USA'
+    if (country == "United States of America") {
+      country = "United States"
+    }
+    
+    // Increment count
+    countries[country] = countries[country] ? countries[country] + 1 : 1
   })
   
   // Fill in the gaps
@@ -273,8 +284,31 @@ window.showStats = function() {
   
   let chart = new Chart('statYears', config)
   
+  // Convert countries from object to array
+  google.countries = Object.keys(countries).map((key) => [key, countries[key]])
+  google.countries.unshift(["Country", "Entries"])
+  
+  // Add a map of countries
+  google.charts.load('current', {
+    'packages': ['geochart'],
+    'mapsApiKey': 'AIzaSyDWNGv3SU6j99CltSq8o80yl89LmmCnIeU'
+  })
+  google.charts.setOnLoadCallback(drawMap)
+  
   window.statsLoaded = true
   switchToView("stats")
+}
+
+// Draw the map of countries
+let drawMap = function() {
+  let data = google.visualization.arrayToDataTable(google.countries)
+  let options = {
+    colorAxis: {
+      colors: ["#008C23", "#008C23"]
+    }
+  }
+  let chart = new google.visualization.GeoChart(document.getElementById('statCountries'))
+  chart.draw(data, options)
 }
 
 let switchToView = function(view) {
