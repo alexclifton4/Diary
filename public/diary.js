@@ -104,13 +104,20 @@ window.showEntry = function(id) {
     document.getElementById("editDate").value = new Date(parseInt(response.data.date)).toJSON().slice(0,10);
     document.getElementById("editCountry").value = response.data.country
     document.getElementById("editPlace").value = response.data.place
+    document.getElementById("editPublic").checked = response.data.public
     document.getElementById("editNotes").value = response.data.notes
     
     saveMode = "edit"
     currentId = id
     
-    // Show the entry view with the delete button
-    document.getElementById("btnDelete").style.display = ""
+    // Show the entry view - possible with delete and edit buttons
+    if (response.data.canEdit) {
+      document.getElementById("btnDelete").style.display = ""
+      document.getElementById("btnSave").style.display = ""
+    } else {
+      document.getElementById("btnDelete").style.display = "none"
+      document.getElementById("btnSave").style.display = "none"
+    }
     switchToView("entry")
   })
 }
@@ -129,6 +136,7 @@ window.showNewView = function(retainValues) {
   
   // Show the view without the delete button
   document.getElementById("btnDelete").style.display = "none"
+  document.getElementById("btnSave").style.display = ""
   switchToView("entry")
 }
 
@@ -170,28 +178,29 @@ window.save = function() {
   let date = document.getElementById("editDate").value
   let country = document.getElementById("editCountry").value
   let place = document.getElementById("editPlace").value
+  let pub = document.getElementById("editPublic").checked
   let notes = document.getElementById("editNotes").value
   // Either update a record or create a new one
   if (saveMode == "edit") {
-    editEntry(date, country, place, notes)
+    editEntry(date, country, place, pub, notes)
   } else {
-    newEntry(date, country, place, notes)
+    newEntry(date, country, place, pub, notes)
   }
 }
 
 // Save edits
-let editEntry = function(date, country, place, notes) {
+let editEntry = function(date, country, place, pub, notes) {
   // Send to server
-  axios.post("/edit", {id: currentId, date: date, country: country, place: place, notes: notes}).then((response) => {
+  axios.post("/edit", {id: currentId, date: date, country: country, place: place, public: pub, notes: notes}).then((response) => {
     // Reload the diary
     window.loadDiary()
   })
 }
 
 // Save a new entry
-let newEntry = function(date, country, place, notes) {
+let newEntry = function(date, country, place, pub, notes) {
   // Send to server
-  axios.post("/new", {date: date, country: country, place: place, notes: notes}).then((response) => {
+  axios.post("/new", {date: date, country: country, place: place, public: pub, notes: notes}).then((response) => {
     // Reload the diary
     window.loadDiary(true)
   })

@@ -128,6 +128,15 @@
           
           <div class="input-group mb-3">
             <div class="input-group-prepend">
+              <span class="input-group-text">Public</span>
+            </div>
+            <div class="form-control">
+              <input type="checkbox" id="editPublic" style="float: left;">
+            </div>
+          </div>
+          
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
               <span class="input-group-text">Notes</span>
             </div>
             <textarea id="editNotes" class="form-control" rows="50" style="height: 500px;"></textarea>
@@ -137,7 +146,7 @@
         
         <button type="button" class="btn btn-primary float-left" onclick="showDiary()">Back</button>
         <div class="float-right">
-        <button type="button" class="btn btn-success" onclick="save()">Save</button>
+        <button type="button" class="btn btn-success" id="btnSave" onclick="save()">Save</button>
       <button type="button" class="btn btn-danger" id="btnDelete" onclick="deleteEntry()">Delete</button>
         </div>
       </div>
