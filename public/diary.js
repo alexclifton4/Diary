@@ -6,6 +6,8 @@ filters.year = "all"
 filters.month = "all"
 filters.search = ""
 
+const MAX_ENTRIES = 100
+
 // Show all entries
 window.loadDiary = function(openNewView) {
   // Switch to loading page
@@ -55,19 +57,21 @@ window.loadDiary = function(openNewView) {
 let populateDiary = function() {
     // Construct the table
     let html = ""
+    let entriesAdded = 0
+    
     // Loop through responses
-    diaryEntries.forEach((entry) => {
+    diaryEntries.every((entry) => {
       // Make sure its not filtered out
       // Year
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
       if (filters.year != "all" && filters.year != year) {
-        return
+        return true
       }
       // Month
       let month = date.getMonth().toString()
       if (filters.month != "all" && filters.month != month) {
-        return
+        return true
       }
       
       // Search
@@ -75,7 +79,7 @@ let populateDiary = function() {
       let placeSearch = entry.place.toLowerCase().indexOf(filters.search) == -1
       let notesSearch = entry.notes.toLowerCase().indexOf(filters.search) == -1
       if (filters.search != "" && countrySearch && placeSearch && notesSearch) {
-        return
+        return true
       }
       
       // Generate the HTML
@@ -85,6 +89,17 @@ let populateDiary = function() {
       html += `<td>${entry.place}</td>`
     html += `<td><div class="notes">${entry.notes}</div></td>`
       html += `</tr>`
+      
+      // Limit the number of entries added
+      entriesAdded++
+      if (entriesAdded >= MAX_ENTRIES) {
+        // Add a message
+        html += `<tr><td colspan="4"><i>Only the first ${MAX_ENTRIES} entries have been displayed.</i></td></tr>`
+        
+        // Returning false ends the 'every' loop
+        return false
+      }
+      return true
     })
     
     // Show the content
