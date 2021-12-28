@@ -134,6 +134,7 @@ window.showEntry = function(id) {
       document.getElementById("btnSave").style.display = "none"
     }
     switchToView("entry")
+    history.pushState({}, "")
   })
 }
 
@@ -153,6 +154,7 @@ window.showNewView = function(retainValues) {
   document.getElementById("btnDelete").style.display = "none"
   document.getElementById("btnSave").style.display = ""
   switchToView("entry")
+  history.pushState({}, "")
 }
 
 // Year filter changed
@@ -230,6 +232,12 @@ window.deleteEntry = function() {
       window.loadDiary()
     })
   }
+}
+
+// Listen for back events
+window.onpopstate = function(e) {
+  // Return to the main page
+  showDiary()
 }
 
 // Show statistics page
