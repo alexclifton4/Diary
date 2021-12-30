@@ -24,32 +24,6 @@ window.loadDiary = function(openNewView) {
       switchToView("diary")
     }
   })
-  
-  // Get values for the filters
-  axios.get("/filterValues").then((response) => {
-    // Add filter for years
-    let yearFilter = document.getElementById("yearFilter")
-    // Add default options
-    let option = document.createElement("option")
-    option.text = "Year"
-    option.value = "all"
-    option.disabled = true
-    option.selected = true
-    yearFilter.add(option)
-    
-    option = document.createElement("option")
-    option.text = "View All"
-    option.value = "all"
-    yearFilter.add(option)
-    
-    // Add each year
-    response.data.year.forEach((year) => {
-      option = document.createElement("option")
-      option.text = year
-      option.value = year
-      yearFilter.add(option)
-    })
-  })
 }
 
 // Populates the diary with data
@@ -58,20 +32,31 @@ let populateDiary = function() {
     // Construct the table
     let html = ""
     let entriesAdded = 0
+    let years = {}
     
     // Loop through responses
-    diaryEntries.every((entry) => {
-      // Make sure its not filtered out
-      // Year
+    diaryEntries.forEach((entry) => {
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
+      
+      // Store the year for filter values
+      years[year] = true
+
+      // Only carry on if the max no. of rows hasn't been reached
+      // Still continue the loop to fill filter values, just don't render anything
+      if (entriesAdded >= MAX_ENTRIES) {
+        return
+      }
+      
+      // Make sure its not filtered out
+      // Year
       if (filters.year != "all" && filters.year != year) {
-        return true
+        return
       }
       // Month
       let month = date.getMonth().toString()
       if (filters.month != "all" && filters.month != month) {
-        return true
+        return
       }
       
       // Search
@@ -79,7 +64,7 @@ let populateDiary = function() {
       let placeSearch = entry.place.toLowerCase().indexOf(filters.search) == -1
       let notesSearch = entry.notes.toLowerCase().indexOf(filters.search) == -1
       if (filters.search != "" && countrySearch && placeSearch && notesSearch) {
-        return true
+        return
       }
       
       // Generate the HTML
@@ -87,7 +72,7 @@ let populateDiary = function() {
       html += `<td>${dateFormat(parseInt(entry.date), "dS mmm. yyyy")}</td>`
       html += `<td>${entry.country}</td>`
       html += `<td>${entry.place}</td>`
-    html += `<td><div class="notes">${entry.notes}</div></td>`
+      html += `<td><div class="notes">${entry.notes}</div></td>`
       html += `</tr>`
       
       // Limit the number of entries added
@@ -95,15 +80,21 @@ let populateDiary = function() {
       if (entriesAdded >= MAX_ENTRIES) {
         // Add a message
         html += `<tr><td colspan="4"><i>Only the first ${MAX_ENTRIES} entries have been displayed.</i></td></tr>`
-        
-        // Returning false ends the 'every' loop
-        return false
       }
-      return true
+      return
     })
     
     // Show the content
     document.getElementById("diaryBody").innerHTML = html
+    
+    // Add filter values
+    // First 2 values are header and view all
+    let filter = '<option disabled selected value="all">Year</option><option value="all">View All</option>'
+    // Add each year
+    Object.keys(years).forEach(year => {
+      filter += `<option${year == filters.year ? " selected" : ""}>${year}</option>`
+    })
+    document.getElementById('yearFilter').innerHTML = filter
 }
 
 // Returns to the diary view without reloading it

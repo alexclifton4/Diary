@@ -83,20 +83,6 @@ app.get("/entry", (req, res) => {
   })
 })
 
-// Send unique values for filters
-app.get("/filterValues", (req, res) => {
-  let sql = "SELECT DISTINCT EXTRACT(year FROM to_timestamp( CAST( date AS bigint ) / 1000 )) AS year FROM entries WHERE public = true OR owner = $1 ORDER BY year;"
-  let db = database.connect()
-  db.query(sql, [req.session.user.id], (err, data) => {
-    if (err) throw err
-    let filters = {}
-    filters.year = data.rows.map(x => x.year)
-    
-    res.send(filters)
-    db.end()
-  })
-})
-
 // Add a new entry
 app.post("/new", (req, res) => {
   let date = new Date(req.body.date).getTime()
