@@ -5,6 +5,7 @@ let filters = {}
 filters.year = "all"
 filters.month = "all"
 filters.search = ""
+let statChart;
 
 const MAX_ENTRIES = 100
 
@@ -304,8 +305,13 @@ window.showStats = function() {
       }
     }
   }
+
+  // If there already is a chart, remove it
+  if (statChart) {
+    statChart.destroy()
+  }
   
-  let chart = new Chart('statYears', config)
+  statChart = new Chart('statYears', config)
   
   // Convert countries from object to array
   google.countries = Object.keys(countries).map((key) => [key, countries[key]])
