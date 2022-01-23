@@ -59,26 +59,11 @@ app.get("/", (req, res) => {
 
 // Send all diary entries
 app.get("/diary", (req, res) => {
-  let sql = "SELECT rowid, date, country, place, notes FROM entries WHERE public = true OR owner = $1 ORDER BY date DESC, country ASC, place ASC"
+  let sql = "SELECT rowid, date, country, place, notes, public, (owner = $1 OR $2) AS canEdit FROM entries WHERE public = true OR owner = $1 ORDER BY date DESC, country ASC, place ASC"
   let db = database.connect()
-  db.query(sql, [req.session.user.id],(err, data) => {
+  db.query(sql, [req.session.user.id, req.session.user.admin],(err, data) => {
     if (err) throw err
     res.send(data.rows)
-    db.end()
-  })
-})
-
-// Send a single entry
-app.get("/entry", (req, res) => {
-  let sql = "SELECT date, country, place, public, notes, owner FROM entries WHERE rowid = $1 AND (public = true OR owner = $2)"
-  let db = database.connect()
-  db.query(sql, [req.query.id, req.session.user.id], (err, data) => {
-    if (err) throw err
-    
-    let entry = data.rows[0]
-    // Work out if the user can edit this entry
-    entry.canEdit = (req.session.user.id == entry.owner) || req.session.user.admin
-    res.send(entry)
     db.end()
   })
 })

@@ -35,7 +35,7 @@ let populateDiary = function() {
     let years = {}
     
     // Loop through responses
-    diaryEntries.forEach((entry) => {
+    diaryEntries.forEach((entry, index) => {
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
       
@@ -69,7 +69,7 @@ let populateDiary = function() {
       }
       
       // Generate the HTML
-      html += `<tr onclick="showEntry(${entry.rowid})">`
+      html += `<tr onclick="showEntry(${index})">` // Note: array index, not entry ID
       html += `<td>${dateFormat(parseInt(entry.date), "dS mmm. yyyy")}</td>`
       html += `<td>${entry.country}</td>`
       html += `<td>${entry.place}</td>`
@@ -99,30 +99,29 @@ let populateDiary = function() {
 }
 
 // Show a single entry
-window.showEntry = function(id) {
-  switchToView("loading")
+// Note: Array index, not entry ID
+window.showEntry = function(index) {
+  let entry = diaryEntries[index]
+
+  document.getElementById("editDate").value = new Date(parseInt(entry.date)).toJSON().slice(0,10);
+  document.getElementById("editCountry").value = entry.country
+  document.getElementById("editPlace").value = entry.place
+  document.getElementById("editPublic").checked = entry.public
+  document.getElementById("editNotes").value = entry.notes
   
-  axios.get("/entry?id=" + id).then((response) => {
-    document.getElementById("editDate").value = new Date(parseInt(response.data.date)).toJSON().slice(0,10);
-    document.getElementById("editCountry").value = response.data.country
-    document.getElementById("editPlace").value = response.data.place
-    document.getElementById("editPublic").checked = response.data.public
-    document.getElementById("editNotes").value = response.data.notes
-    
-    saveMode = "edit"
-    currentId = id
-    
-    // Show the entry view - possibly with delete and edit buttons
-    if (response.data.canEdit) {
-      document.getElementById("btnDelete").style.display = ""
-      document.getElementById("btnSave").style.display = ""
-    } else {
-      document.getElementById("btnDelete").style.display = "none"
-      document.getElementById("btnSave").style.display = "none"
-    }
-    switchToView("entry")
-    history.pushState({}, "")
-  })
+  saveMode = "edit"
+  currentId = entry.rowid
+  
+  // Show the entry view - possibly with delete and edit buttons
+  if (entry.canedit) {
+    document.getElementById("btnDelete").style.display = ""
+    document.getElementById("btnSave").style.display = ""
+  } else {
+    document.getElementById("btnDelete").style.display = "none"
+    document.getElementById("btnSave").style.display = "none"
+  }
+  switchToView("entry")
+  history.pushState({}, "")
 }
 
 // Year filter changed
