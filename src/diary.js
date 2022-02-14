@@ -1,4 +1,6 @@
-let diaryEntries;
+const axios = require("axios")
+import dateFormat from "dateformat"
+
 let saveMode;
 let currentId;
 let filters = {}
@@ -16,7 +18,7 @@ window.loadDiary = function(openNewView) {
   
   // Get the data from the server
   axios.get("/diary").then((response) => {
-    diaryEntries = response.data
+    window.diaryEntries = response.data
     populateDiary()
     if (openNewView) {
       showNewView(true) // true retains the date and country
@@ -35,7 +37,7 @@ let populateDiary = function() {
     let years = {}
     
     // Loop through responses
-    diaryEntries.forEach((entry, index) => {
+    window.diaryEntries.forEach((entry, index) => {
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
       
@@ -101,7 +103,7 @@ let populateDiary = function() {
 // Show a single entry
 // Note: Array index, not entry ID
 window.showEntry = function(index) {
-  let entry = diaryEntries[index]
+  let entry = window.diaryEntries[index]
 
   document.getElementById("editDate").value = new Date(parseInt(entry.date)).toJSON().slice(0,10);
   document.getElementById("editCountry").value = entry.country
@@ -221,7 +223,7 @@ window.deleteEntry = function() {
   }
 }
 
-let switchToView = function(view) {
+window.switchToView = function(view) {
   // Hide all the views
   document.getElementById("loading").style.display = "none"
   document.getElementById("diary").style.display = "none"
