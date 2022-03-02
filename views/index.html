@@ -106,7 +106,12 @@
         <tbody id="diaryBody"></tbody>
       </table>
 
-      <button type="button" class="btn btn-primary fixed-bottom" onclick="showNewView()">Add New</button>
+      <button id="addNew" type="button" class="btn btn-primary fixed-bottom" onclick="showNewView()">Add New</button>
+      
+      <!-- Offline alert -->
+      <div id="offline" class="alert alert-danger fixed-bottom text-center" role="alert" style="display: none;">
+        <strong>Offline</strong> Diary is offline
+      </div>
     </div>
 
     <!-- Entry page -->
@@ -152,9 +157,12 @@
       </form>
 
       <button type="button" class="btn btn-primary float-left" onclick="history.back()">Back</button>
-      <div class="float-right">
+      <div id="editButtons" class="float-right">
         <button type="button" class="btn btn-success" id="btnSave" onclick="save()">Save</button>
         <button type="button" class="btn btn-danger" id="btnDelete" onclick="deleteEntry()">Delete</button>
+      </div>
+      <div id="editOffline" class="float-right" style="display: none;">
+        <h3>Offline</h3>
       </div>
     </div>
 

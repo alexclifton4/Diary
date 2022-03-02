@@ -240,7 +240,26 @@ window.onpopstate = function(e) {
   switchToView("diary")
 }
 
-// On page load, load the diary
+// On page load
 window.onload = function() {
+  // Load the service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(err => {
+      console.log('ServiceWorker registration failed: ' + err)
+    })
+  }
+
+  // Received from the service worker when working offline
+  navigator.serviceWorker.addEventListener('message', event => {
+    // Hide elements
+    document.getElementById("addNew").style.display = "none"
+    document.getElementById("editButtons").style.display = "none"
+
+    // Show elements
+    document.getElementById("offline").style.display = "block"
+    document.getElementById("editOffline").style.display = "block"
+  });
+
+  // Load the diary
   loadDiary()
 }
