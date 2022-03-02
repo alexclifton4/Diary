@@ -156,13 +156,15 @@
 
       </form>
 
-      <button type="button" class="btn btn-primary float-left" onclick="history.back()">Back</button>
-      <div id="editButtons" class="float-right">
-        <button type="button" class="btn btn-success" id="btnSave" onclick="save()">Save</button>
-        <button type="button" class="btn btn-danger" id="btnDelete" onclick="deleteEntry()">Delete</button>
-      </div>
-      <div id="editOffline" class="float-right" style="display: none;">
-        <h3>Offline</h3>
+      <div class="alert alert-dark fixed-bottom text-center" role="alert" style="margin-bottom: 0px;">
+        <button type="button" class="btn btn-primary float-left" onclick="history.back()">Back</button>
+        <div id="editButtons" class="float-right">
+          <button type="button" class="btn btn-success" id="btnSave" onclick="save()">Save</button>
+          <button type="button" class="btn btn-danger" id="btnDelete" onclick="deleteEntry()">Delete</button>
+        </div>
+        <div id="editOffline" class="float-right" style="display: none;">
+          <h3>Offline</h3>
+        </div>
       </div>
     </div>
 
