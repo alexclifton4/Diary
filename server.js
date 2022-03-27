@@ -19,7 +19,7 @@ app.set("trust proxy", 1)
 
 let redisClient = new redis(process.env.REDIS_URL)
 app.use(session({
-  store: new redisStore({client: redisClient}),
+  store: new redisStore({client: redisClient, prefix: "diary:"}),
   secret: "something random",
   saveUninitialized: false,
   resave: false
