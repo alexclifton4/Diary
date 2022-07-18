@@ -142,7 +142,12 @@ window.monthChanged = function(select) {
 
 // Search field changed
 window.searchChanged = function(search) {
-  filters.search = search.value.toLowerCase()
+  // Ignore case and whitespace
+  filters.search = search.value.toLowerCase().trim()
+
+  // Hide the keyboard
+  document.activeElement.blur()
+
   populateDiary()
 }
 
