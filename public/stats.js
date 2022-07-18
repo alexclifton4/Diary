@@ -1,7 +1,3 @@
-
-import {Chart, BarController, BarElement, CategoryScale, LinearScale} from "chart.js"
-Chart.register(BarController, BarElement, CategoryScale, LinearScale)
-
 let statChart;
 
 // Show statistics page
@@ -13,7 +9,7 @@ window.showStats = function() {
     }
     
     // Count the entries
-    $("#statTotal").html(window.diaryEntries.length)
+    $("#statTotal").html(diaryEntries.length)
     
     let years = {}
     let min = Infinity
@@ -21,7 +17,7 @@ window.showStats = function() {
     let countries = {}
     
     // Loop through each entry
-    window.diaryEntries.forEach(entry => {
+    diaryEntries.forEach(entry => {
       // Get the year
       let year = new Date(parseInt(entry.date)).getFullYear()
       
