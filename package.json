@@ -2,7 +2,7 @@
   "name": "Diary",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^0.21.4",
