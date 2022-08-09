@@ -1,3 +1,4 @@
+let diaries;
 let diaryEntries;
 let saveMode;
 let currentId;
@@ -5,6 +6,7 @@ let filters = {}
 filters.year = "all"
 filters.month = "all"
 filters.search = ""
+filters.diaries = []
 
 const MAX_ENTRIES = 100
 
@@ -16,8 +18,33 @@ window.loadDiary = function(openNewView) {
   
   // Get the data from the server
   axios.get("/diary").then((response) => {
-    diaryEntries = response.data
+    // Loop through diaries
+    diaries = response.data.diaries
+    let filtersSelect = document.getElementById("diaries")
+    let editSelect = document.getElementById("editDiary")
+    
+    // Loop through diaries
+    response.data.diaries.forEach(diary => {
+      // Add to dropdown in filters
+      let option = document.createElement("option")
+      option.innerHTML = diary.name
+      option.value = diary.diaryid
+      option.selected = true
+      filtersSelect.appendChild(option)
+      
+      // Add to dropdown in edit page
+      option = document.createElement("option")
+      option.innerHTML = diary.name
+      option.value = diary.diaryid
+      option.disabled = !diary.write
+      editSelect.appendChild(option)
+    })
+    filters.diaries = diaries.map(x => x.diaryid)
+    
+    // Add the diary entries
+    diaryEntries = response.data.entries
     populateDiary()
+    
     if (openNewView) {
       showNewView(true) // true retains the date and country
     } else {
@@ -34,7 +61,7 @@ let populateDiary = function() {
     let entriesAdded = 0
     let years = {}
     
-    // Loop through responses
+    // Loop through entries
     diaryEntries.forEach((entry, index) => {
       let date = new Date(parseInt(entry.date))
       let year = date.getFullYear().toString()
@@ -65,6 +92,11 @@ let populateDiary = function() {
       let placeSearch = entry.place.toLowerCase().indexOf(filters.search) == -1
       let notesSearch = entry.notes.toLowerCase().indexOf(filters.search) == -1
       if (filters.search != "" && countrySearch && placeSearch && notesSearch) {
+        return
+      }
+      
+      // Diaries
+      if (!filters.diaries.includes(entry.diary)) {
         return
       }
       
@@ -106,14 +138,15 @@ window.showEntry = function(index) {
   document.getElementById("editDate").value = new Date(parseInt(entry.date)).toJSON().slice(0,10);
   document.getElementById("editCountry").value = entry.country
   document.getElementById("editPlace").value = entry.place
-  document.getElementById("editPublic").checked = entry.public
+  document.getElementById("editDiary").value = entry.diary
   document.getElementById("editNotes").value = entry.notes
   
   saveMode = "edit"
   currentId = entry.rowid
   
   // Show the entry view - possibly with delete and edit buttons
-  if (entry.canedit) {
+  let canEdit = diaries.find(x => x.diaryid == entry.diary).write
+  if (canEdit) {
     document.getElementById("btnDelete").style.display = ""
     document.getElementById("btnSave").style.display = ""
   } else {
@@ -149,14 +182,26 @@ window.searchChanged = function(search) {
   populateDiary()
 }
 
+// Diaries filter changed
+window.diariesChanged = function() {
+  let selected = document.querySelectorAll('#diaries option:checked')
+  filters.diaries = Array.from(selected).map(x => x.value)
+  
+  populateDiary()
+}
+
 // Clear all filters
 window.clearFilters = function() {
   document.getElementById("yearFilter").value = "all"
   document.getElementById("monthFilter").value = "all"
   document.getElementById("search").value = ""
+  document.querySelectorAll("#diaries option").forEach(opt => {
+    opt.selected = true
+  })
   filters.year = "all"
   filters.month = "all"
   filters.search = ""
+  filters.diaries = diaries.map(x => x.diaryid)
   
   populateDiary()
 }
@@ -187,29 +232,29 @@ window.save = function() {
   let date = document.getElementById("editDate").value
   let country = document.getElementById("editCountry").value
   let place = document.getElementById("editPlace").value
-  let pub = document.getElementById("editPublic").checked
+  let diary = document.getElementById("editDiary").value
   let notes = document.getElementById("editNotes").value
   // Either update a record or create a new one
   if (saveMode == "edit") {
-    editEntry(date, country, place, pub, notes)
+    editEntry(date, country, place, diary, notes)
   } else {
-    newEntry(date, country, place, pub, notes)
+    newEntry(date, country, place, diary, notes)
   }
 }
 
 // Save edits
-let editEntry = function(date, country, place, pub, notes) {
+let editEntry = function(date, country, place, diary, notes) {
   // Send to server
-  axios.post("/edit", {id: currentId, date: date, country: country, place: place, public: pub, notes: notes}).then((response) => {
+  axios.post("/edit", {id: currentId, date: date, country: country, place: place, diary: diary, notes: notes}).then((response) => {
     // Reload the diary
     window.loadDiary()
   })
 }
 
 // Save a new entry
-let newEntry = function(date, country, place, pub, notes) {
+let newEntry = function(date, country, place, diary, notes) {
   // Send to server
-  axios.post("/new", {date: date, country: country, place: place, public: pub, notes: notes}).then((response) => {
+  axios.post("/new", {date: date, country: country, place: place, diary: diary, notes: notes}).then((response) => {
     // Reload the diary
     window.loadDiary(true) // true to open the new view
   })

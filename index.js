@@ -38,7 +38,6 @@ app.get("/sso", (req, res) => {
     req.session.user = {
       id: response.data.id,
       name: response.data.name,
-      admin: response.data.admin == "true"
     }
     res.redirect("/")
   })
@@ -59,12 +58,26 @@ app.get("/", (req, res) => {
 
 // Send all diary entries
 app.get("/diary", (req, res) => {
-  let sql = "SELECT rowid, date, country, place, notes, public, (owner = $1 OR $2) AS canEdit FROM entries WHERE public = true OR owner = $1 ORDER BY date DESC, country ASC, place ASC"
+  // Get the names of all the diaries
+  let sql = "Select diaries.diaryid, diaries.name, members.write from members inner join diaries on members.diaryid=diaries.diaryid where members.userid = $1;"
   let db = database.connect()
-  db.query(sql, [req.session.user.id, req.session.user.admin],(err, data) => {
+  
+  db.query(sql, [req.session.user.id], (err, data) => {
     if (err) throw err
-    res.send(data.rows)
-    db.end()
+    
+    let result = {}
+    result.diaries = data.rows
+    
+    // Get diary entries from the above diaries
+    sql = "SELECT rowid, date, country, place, notes, diary FROM entries WHERE diary = ANY($1) ORDER BY date DESC, country ASC, place ASC"
+  
+    db.query(sql, [result.diaries.map(x => x.diaryid)], (err, data) => {
+      if (err) throw err
+      result.entries = data.rows
+    
+      res.send(result)
+      db.end()
+    })
   })
 })
 
@@ -72,9 +85,9 @@ app.get("/diary", (req, res) => {
 app.post("/new", (req, res) => {
   let date = new Date(req.body.date).getTime()
   
-  let sql = "INSERT INTO entries (date, country, place, public, notes, owner) VALUES ($1, $2, $3, $4, $5, $6)"
+  let sql = "INSERT INTO entries (date, country, place, notes, diary) VALUES ($1, $2, $3, $4, $5)"
   let db = database.connect()
-  db.query(sql, [date, req.body.country, req.body.place, req.body.public, req.body.notes, req.session.user.id], (err) => {
+  db.query(sql, [date, req.body.country, req.body.place, req.body.notes, req.body.diary], (err) => {
     if (err) throw err
     res.send("ok")
     db.end()
@@ -88,23 +101,22 @@ app.post("/edit", (req, res) => {
   
   let user = req.session.user
   
-  let sql = "UPDATE entries SET date = $1, country = $2, place = $3, notes = $4, public = $5 WHERE rowid = $6 AND (owner = $7 OR $8)"
+  let sql = "UPDATE entries SET date = $1, country = $2, place = $3, notes = $4, diary = $5 WHERE rowid = $6"
   let db = database.connect()
-  db.query(sql, [date, entry.country, entry.place, entry.notes, entry.public, entry.id, user.id, user.admin], (err) => {
+  db.query(sql, [date, entry.country, entry.place, entry.notes, entry.diary, entry.id], (err) => {
     if (err) throw err
     res.send("ok")
     db.end()
   })
 })
 
-
 // Delete an entry
 app.post("/delete", (req, res) => {
   let user = req.session.user
 
-  let sql = "DELETE FROM entries WHERE rowid = $1 AND (owner = $2 OR $3)"
+  let sql = "DELETE FROM entries WHERE rowid = $1"
   let db = database.connect()
-  db.query(sql, [req.body.id, user.id, user.admin], (err) => {
+  db.query(sql, [req.body.id], (err) => {
     if (err) throw err
     res.send("ok")
     db.end()

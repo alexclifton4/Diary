@@ -88,6 +88,13 @@
                 <input id="search" type="text" onchange="searchChanged(this)">
               </div>
             </div>
+            <div class="row">
+              <div class="col-sm">
+                <h5>Diaries</h5>
+                <select id="diaries" multiple onchange="diariesChanged()">
+                </select>
+              </div>
+            </div>
             <hr>
             <div class="row">
               <div class="col-sm">
@@ -144,11 +151,10 @@
 
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text">Public</span>
+            <span class="input-group-text">Diary</span>
           </div>
-          <div class="form-control">
-            <input type="checkbox" id="editPublic" style="float: left;">
-          </div>
+          <select class="form-control" id="editDiary">
+          </select>
         </div>
 
         <div class="input-group mb-3">
