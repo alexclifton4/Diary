@@ -18,10 +18,12 @@ window.loadDiary = function(openNewView) {
   
   // Get the data from the server
   axios.get("/diary").then((response) => {
-    // Loop through diaries
+    // Add the diaries
     diaries = response.data.diaries
     let filtersSelect = document.getElementById("diaries")
+    filtersSelect.innerHTML = ""
     let editSelect = document.getElementById("editDiary")
+    editSelect.innerHTML = ""
     
     // Loop through diaries
     response.data.diaries.forEach(diary => {
