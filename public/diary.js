@@ -5,6 +5,7 @@ let currentId;
 let filters = {}
 filters.year = "all"
 filters.month = "all"
+filters.day = "all"
 filters.search = ""
 filters.diaries = []
 
@@ -88,6 +89,12 @@ let populateDiary = function() {
       if (filters.month != "all" && filters.month != month) {
         return
       }
+
+      // Day
+      let day = date.getDate().toString()
+      if (filters.day != "all" && filters.day != day) {
+        return
+      }
       
       // Search
       let countrySearch = entry.country.toLowerCase().indexOf(filters.search) == -1
@@ -130,6 +137,13 @@ let populateDiary = function() {
       filter += `<option${year == filters.year ? " selected" : ""}>${year}</option>`
     })
     document.getElementById('yearFilter').innerHTML = filter
+
+    // Add each day
+    filter = '<option disabled selected value="all">Day</option><option value="all">View All</option>'
+    for (let day = 1; day <= 31; day++) {
+        filter += `<option${day == filters.day ? " selected" : ""}>${day}</option>`
+    }
+    document.getElementById('dayFilter').innerHTML = filter
 }
 
 // Show a single entry
@@ -173,6 +187,13 @@ window.monthChanged = function(select) {
   populateDiary()
 }
 
+// Month filter changed
+window.dayChanged = function(select) {
+  // Get the selected month
+  filters.day = select.value
+  populateDiary()
+}
+
 // Search field changed
 window.searchChanged = function(search) {
   // Ignore case and whitespace
@@ -196,12 +217,14 @@ window.diariesChanged = function() {
 window.clearFilters = function() {
   document.getElementById("yearFilter").value = "all"
   document.getElementById("monthFilter").value = "all"
+  document.getElementById("dayFilter").value = "all"
   document.getElementById("search").value = ""
   document.querySelectorAll("#diaries option").forEach(opt => {
     opt.selected = true
   })
   filters.year = "all"
   filters.month = "all"
+  filters.day = "all"
   filters.search = ""
   filters.diaries = diaries.map(x => x.diaryid)
   
