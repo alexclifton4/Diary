@@ -56,6 +56,12 @@ app.get("/", (req, res) => {
   res.send(html)
 })
 
+// Returns the API key for the map on the stats page
+// It is expected that this is publicly available - the key usage is restricted to this page
+app.get("/mapsApiKey", (req, res) => {
+  res.send(process.env.MAPS_API_KEY)
+})
+
 // Send all diary entries
 app.get("/diary", (req, res) => {
   // Get the names of all the diaries

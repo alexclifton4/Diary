@@ -84,16 +84,19 @@ window.showStats = function() {
     // Convert countries from object to array
     google.countries = Object.keys(countries).map((key) => [key, countries[key]])
     google.countries.unshift(["Country", "Entries"])
-    
-    // Add a map of countries
-    google.charts.load('current', {
-      'packages': ['geochart'],
-      'mapsApiKey': 'AIzaSyDWNGv3SU6j99CltSq8o80yl89LmmCnIeU'
+
+    // Get the API key from the server
+    axios.get("/mapsApiKey").then(response => {
+      // Add a map of countries
+      google.charts.load('current', {
+        'packages': ['geochart'],
+        'mapsApiKey': response.data
+      })
+      google.charts.setOnLoadCallback(drawMap)
+      
+      window.statsLoaded = true
+      switchToView("stats")
     })
-    google.charts.setOnLoadCallback(drawMap)
-    
-    window.statsLoaded = true
-    switchToView("stats")
   }
   
   // Draw the map of countries
