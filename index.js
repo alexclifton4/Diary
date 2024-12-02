@@ -5,6 +5,7 @@ const redisStore = require("connect-redis")(session)
 const redis = require("ioredis")
 const fs = require("fs")
 const axios = require("axios")
+require("dotenv").config()
 
 const database = require("./db.js")
 const countryDropdown = require("./countryDropdown.js")
