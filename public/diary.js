@@ -296,6 +296,28 @@ window.deleteEntry = function() {
   }
 }
 
+// Menu bar option to download data
+window.downloadData = function() {
+  if (confirm("Download all data?")) {
+    // Format data
+    let data = "diary,date,country,place,notes\n"
+    diaryEntries.forEach(entry => {
+      let diary = diaries.find(x => x.diaryid == entry.diary).name
+      let date = dateFormat(parseInt(entry.date), "dS mmm. yyyy")
+      let notes = entry.notes.replace(/"/g, "")
+      data += `"${diary}","${date}","${entry.country}","${entry.place}","${notes}"\n`
+    })
+
+    // Create download link and click it
+    let uri = encodeURI("data:text/csv;charset=utf-8," + data)
+    let link = document.createElement("a");
+    link.setAttribute("href", uri);
+    link.setAttribute("download", "diary_data.csv");
+    document.body.appendChild(link);
+    link.click();
+  }
+}
+
 let switchToView = function(view) {
   // Hide all the views
   document.getElementById("loading").style.display = "none"
