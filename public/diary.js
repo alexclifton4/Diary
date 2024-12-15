@@ -298,7 +298,7 @@ window.deleteEntry = function() {
 
 // Menu bar option to download data
 window.downloadData = function() {
-  if (confirm("Download all data?")) {
+  if (confirm("Download all data? Note: This needs to be done from a laptop")) {
     // Format data
     let data = "diary,date,country,place,notes\n"
     diaryEntries.forEach(entry => {
