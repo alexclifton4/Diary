@@ -12,7 +12,7 @@ filters.diaries = []
 const MAX_ENTRIES = 100
 
 // Fetch entries from the server and display
-window.loadDiary = function(openNewView) {
+window.loadDiary = function() {
   // Switch to loading page
   switchToView("loading")
   window.statsLoaded = false
@@ -48,11 +48,7 @@ window.loadDiary = function(openNewView) {
     diaryEntries = response.data.entries
     populateDiary()
     
-    if (openNewView) {
-      showNewView(true) // true retains the date and country
-    } else {
-      switchToView("diary")
-    }
+    switchToView("diary")
   })
 }
 
@@ -271,8 +267,16 @@ window.save = function() {
 let editEntry = function(date, country, place, diary, notes) {
   // Send to server
   axios.post("/edit", {id: currentId, date: date, country: country, place: place, diary: diary, notes: notes}).then((response) => {
-    // Reload the diary
-    window.loadDiary()
+    if (response.data == "ok") {
+      // Reload the diary
+      window.loadDiary()
+    } else {
+      console.log("Error saving, response:", response.data)
+      alert("Failed to save - try again")
+    }
+  }).catch(error => {
+    console.log("Error saving, response:", error)
+      alert("Failed to save - try again")
   })
 }
 
@@ -280,8 +284,16 @@ let editEntry = function(date, country, place, diary, notes) {
 let newEntry = function(date, country, place, diary, notes) {
   // Send to server
   axios.post("/new", {date: date, country: country, place: place, diary: diary, notes: notes}).then((response) => {
-    // Reload the diary
-    window.loadDiary(true) // true to open the new view
+    if (response.data == "ok") {
+      // Reload the diary
+      window.loadDiary()
+    } else {
+      console.log("Error saving, response:", response.data)
+      alert("Failed to save - try again")
+    }
+  }).catch(error => {
+    console.log("Error saving, response:", error)
+      alert("Failed to save - try again")
   })
 }
 
