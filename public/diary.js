@@ -342,18 +342,19 @@ window.onload = function() {
     navigator.serviceWorker.register('/sw.js').catch(err => {
       console.log('ServiceWorker registration failed: ' + err)
     })
+    
+    // Received from the service worker when working offline
+    navigator.serviceWorker.addEventListener('message', event => {
+      // Hide elements
+      document.getElementById("addNew").style.display = "none"
+      document.getElementById("editButtons").style.display = "none"
+
+      // Show elements
+      document.getElementById("offline").style.display = "block"
+      document.getElementById("editOffline").style.display = "block"
+    });
   }
 
-  // Received from the service worker when working offline
-  navigator.serviceWorker.addEventListener('message', event => {
-    // Hide elements
-    document.getElementById("addNew").style.display = "none"
-    document.getElementById("editButtons").style.display = "none"
-
-    // Show elements
-    document.getElementById("offline").style.display = "block"
-    document.getElementById("editOffline").style.display = "block"
-  });
 
   // Load the diary
   loadDiary()
