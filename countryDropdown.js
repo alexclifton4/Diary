@@ -144,6 +144,7 @@ module.exports = `<select class="form-control" id="editCountry">
 <option value="Moldova">Moldova</option>
 <option value="Monaco">Monaco</option>
 <option value="Mongolia">Mongolia</option>
+<option value="Montenegro">Montenegro</option>
 <option value="Montserrat">Montserrat</option>
 <option value="Morocco">Morocco</option>
 <option value="Mozambique">Mozambique</option>
@@ -176,7 +177,6 @@ module.exports = `<select class="form-control" id="editCountry">
 <option value="Portugal">Portugal</option>
 <option value="Puerto Rico">Puerto Rico</option>
 <option value="Qatar">Qatar</option>
-<option value="Republic of Montenegro">Republic of Montenegro</option>
 <option value="Republic of Serbia">Republic of Serbia</option>
 <option value="Reunion">Reunion</option>
 <option value="Romania">Romania</option>
